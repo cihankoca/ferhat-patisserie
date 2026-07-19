@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py
+*.pyc
+
+# Screenshots (dev only)
+ss-*.png
+screenshot-*.png
+verify-*.png
+
+# Dev folders
+crop-test/
+photo-audit/
+instagram-photos/
+
+# OS
+.DS_Store
+Thumbs.db
