@@ -250,14 +250,21 @@
     .nav-logo:hover { opacity: 0.8; }
 
     .nav-logo-img {
-      width: 52px;
-      height: 52px;
+      width: 54px;
+      height: 54px;
       border-radius: 50%;
       margin-right: 14px;
       vertical-align: middle;
-      border: 2px solid rgba(201, 169, 110, 0.35);
+      border: 2px solid rgba(201, 169, 110, 0.5);
       background: white;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 2px 16px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(201, 169, 110, 0.1);
+      transition: all 0.4s var(--ease-out-expo);
+    }
+
+    .nav-logo:hover .nav-logo-img {
+      border-color: var(--gold-light);
+      box-shadow: 0 4px 20px rgba(201, 169, 110, 0.3), 0 0 0 2px rgba(201, 169, 110, 0.15);
+      transform: scale(1.05);
     }
 
     .nav-logo span {
@@ -1661,7 +1668,7 @@
   <!-- ═══ NAVIGATION ═══ -->
   <nav class="nav" id="nav">
     <div class="nav-inner">
-      <a href="#" class="nav-logo"><img src="images-enhanced/profil-small.png" alt="Ferhat Patisserie" class="nav-logo-img">Ferhat <span>Patisserie</span></a>
+      <a href="#" class="nav-logo"><img src="images-enhanced/profil-nav.png" alt="Ferhat Patisserie" class="nav-logo-img">Ferhat <span>Patisserie</span></a>
       <ul class="nav-links" id="navLinks">
         <li><a href="#menu" onclick="closeMenu()">Menü</a></li>
         <li><a href="#galeri" onclick="closeMenu()">Galeri</a></li>
