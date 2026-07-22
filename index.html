@@ -282,9 +282,9 @@
 
     .nav-links a {
       font-family: var(--font-body);
-      font-size: 0.78rem;
-      font-weight: 400;
-      color: rgba(255,255,255,0.7);
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.88);
       text-decoration: none;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -435,38 +435,41 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 16px;
+      padding: 10px 22px;
       border-radius: 100px;
-      font-size: 0.75rem;
-      font-weight: 500;
+      font-size: 0.85rem;
+      font-weight: 600;
       backdrop-filter: blur(12px);
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
     }
 
     .hero-badge--gold {
-      background: rgba(201, 169, 110, 0.15);
+      background: rgba(201, 169, 110, 0.18);
       color: var(--gold-pale);
-      border: 1px solid rgba(201, 169, 110, 0.25);
+      border: 1px solid rgba(201, 169, 110, 0.4);
+      box-shadow: 0 0 20px rgba(201, 169, 110, 0.12);
     }
 
     .hero-badge--live {
-      background: rgba(196, 122, 122, 0.2);
-      color: var(--rose-pale);
-      border: 1px solid rgba(196, 122, 122, 0.3);
+      background: rgba(72, 199, 142, 0.2);
+      color: #a8f0d0;
+      border: 1px solid rgba(72, 199, 142, 0.5);
+      box-shadow: 0 0 24px rgba(72, 199, 142, 0.2), inset 0 0 8px rgba(72, 199, 142, 0.05);
     }
 
     .hero-badge--live::before {
       content: '';
-      width: 7px;
-      height: 7px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      background: var(--rose);
-      animation: live-pulse 2.5s ease-in-out infinite;
+      background: #48c78e;
+      box-shadow: 0 0 6px #48c78e;
+      animation: live-pulse 2s ease-in-out infinite;
     }
 
     @keyframes live-pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.8); }
+      0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 6px #48c78e; }
+      50% { opacity: 0.5; transform: scale(0.7); box-shadow: 0 0 12px #48c78e; }
     }
 
     .hero-title {
@@ -643,14 +646,19 @@
 
     .features-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    @media (max-width: 768px) {
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     .feature-card {
       background: var(--white);
-      border-radius: 24px;
-      padding: 40px 32px;
+      border-radius: 20px;
       border: 1px solid rgba(201, 169, 110, 0.1);
       transition: all 0.5s var(--ease-out-expo);
       position: relative;
@@ -668,6 +676,7 @@
       transform: scaleX(0);
       transform-origin: left;
       transition: transform 0.6s var(--ease-out-expo);
+      z-index: 1;
     }
 
     .feature-card:hover::before { transform: scaleX(1); }
@@ -678,17 +687,25 @@
       border-color: rgba(201, 169, 110, 0.2);
     }
 
-    .feature-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 16px;
-      background: linear-gradient(135deg, rgba(201, 169, 110, 0.12), rgba(201, 169, 110, 0.04));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 24px;
-      font-size: 1.5rem;
-      border: 1px solid rgba(201, 169, 110, 0.15);
+    .feature-card-img {
+      width: 100%;
+      height: 260px;
+      overflow: hidden;
+    }
+
+    .feature-card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s var(--ease-out-expo);
+    }
+
+    .feature-card:hover .feature-card-img img {
+      transform: scale(1.05);
+    }
+
+    .feature-card-body {
+      padding: 28px 28px 32px;
     }
 
     .feature-card h3 {
@@ -1640,13 +1657,13 @@
       width: 56px;
       height: 56px;
       border-radius: 50%;
-      background: #25D366;
+      background: var(--gold);
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
       text-decoration: none;
-      box-shadow: 0 6px 24px rgba(37, 211, 102, 0.35);
+      box-shadow: 0 6px 24px rgba(201, 169, 110, 0.35);
       transition: all 0.4s var(--ease-out-expo);
       animation: wa-entrance 0.7s var(--ease-out-expo) 1.5s both;
     }
@@ -1658,7 +1675,7 @@
 
     .whatsapp-float:hover {
       transform: scale(1.12);
-      box-shadow: 0 10px 36px rgba(37, 211, 102, 0.5);
+      box-shadow: 0 10px 36px rgba(201, 169, 110, 0.5);
     }
 
     .whatsapp-float svg {
@@ -1757,7 +1774,6 @@
         <li><a href="#yorumlar" onclick="closeMenu()">Yorumlar</a></li>
         <li><a href="#iletisim" onclick="closeMenu()">İletişim</a></li>
       </ul>
-      <span class="nav-badge">24 Saat</span>
       <button class="nav-toggle" id="navToggle" onclick="toggleMenu()" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>
@@ -1788,9 +1804,9 @@
         Pasta · Börek · Poğaça · Kurabiye · Simit — her gün taze.
       </p>
       <div class="hero-actions">
-        <a href="https://wa.me/905403143333" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          WhatsApp Sipariş
+        <a href="https://ig.me/m/ferhatpatisserie" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          DM ile Sipariş
         </a>
         <a href="#menu" class="btn btn-outline">Menüyü Gör</a>
       </div>
@@ -1831,8 +1847,13 @@
         </span>
         <span class="trust-dot"></span>
         <span class="trust-item">
-          <svg viewBox="0 0 24 24"><path d="M17 1H7c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm0 18H7V5h10v14z"/></svg>
-          Getir & Yemeksepeti
+          <img src="images-enhanced/getir-icon.png" alt="Getir" width="18" height="18" style="border-radius: 4px; vertical-align: middle;">
+          GetirYemek
+        </span>
+        <span class="trust-dot"></span>
+        <span class="trust-item">
+          <img src="images-enhanced/yemeksepeti-icon.png" alt="Yemeksepeti" width="18" height="18" style="border-radius: 4px; vertical-align: middle;">
+          Yemeksepeti
         </span>
       </div>
       <div class="trust-content" aria-hidden="true">
@@ -1862,8 +1883,13 @@
         </span>
         <span class="trust-dot"></span>
         <span class="trust-item">
-          <svg viewBox="0 0 24 24"><path d="M17 1H7c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zm0 18H7V5h10v14z"/></svg>
-          Getir & Yemeksepeti
+          <img src="images-enhanced/getir-icon.png" alt="Getir" width="18" height="18" style="border-radius: 4px; vertical-align: middle;">
+          GetirYemek
+        </span>
+        <span class="trust-dot"></span>
+        <span class="trust-item">
+          <img src="images-enhanced/yemeksepeti-icon.png" alt="Yemeksepeti" width="18" height="18" style="border-radius: 4px; vertical-align: middle;">
+          Yemeksepeti
         </span>
       </div>
     </div>
@@ -1884,24 +1910,25 @@
       </div>
       <div class="features-grid">
         <div class="feature-card reveal reveal-delay-1">
-          <div class="feature-icon">🎂</div>
-          <h3>Özel Gün Pastaları</h3>
-          <p>Doğum günü, nişan, düğün — konsept pasta siparişleriniz özenle hazırlanır.</p>
+          <div class="feature-card-img"><img src="images-enhanced/gold-macaron.jpg" alt="Özel gün pastası — makaronlu tasarım" loading="lazy"></div>
+          <div class="feature-card-body">
+            <h3>Özel Gün Pastaları</h3>
+            <p>Doğum günü, nişan, düğün — konsept pasta siparişleriniz özenle hazırlanır.</p>
+          </div>
         </div>
         <div class="feature-card reveal reveal-delay-2">
-          <div class="feature-icon">🥐</div>
-          <h3>Taze Börek & Poğaça</h3>
-          <p>Her sabah fırından çıkan el açması börekler ve çeşit çeşit poğaçalar.</p>
+          <div class="feature-card-img"><img src="images-enhanced/pogaca-stock.jpg" alt="Taze poğaça — susamlı, fırından" loading="lazy"></div>
+          <div class="feature-card-body">
+            <h3>Taze Börek & Poğaça</h3>
+            <p>Her sabah fırından çıkan el açması börekler ve çeşit çeşit poğaçalar.</p>
+          </div>
         </div>
         <div class="feature-card reveal reveal-delay-3">
-          <div class="feature-icon">🍰</div>
-          <h3>Geleneksel Tatlılar</h3>
-          <p>Baklava, sütlaç, kazandibi ve Mersin'e özgü lezzetler.</p>
-        </div>
-        <div class="feature-card reveal reveal-delay-4">
-          <div class="feature-icon">🕐</div>
-          <h3>24 Saat Hizmet</h3>
-          <p>Gece yarısı bile taze pasta ve börek. Kapımız her an açık.</p>
+          <div class="feature-card-img"><img src="images-enhanced/ekler-stock2.jpg" alt="Tatlılar ve ekler" loading="lazy"></div>
+          <div class="feature-card-body">
+            <h3>Tatlılar & Ekler</h3>
+            <p>Trileçe, magnolya, sütlaç, ıslak kek ve çikolatalı ekler.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -1913,7 +1940,7 @@
       <div class="menu-header reveal">
         <div class="section-eyebrow">Lezzetlerimiz</div>
         <h2 class="section-title">Menümüz</h2>
-        <p class="section-subtitle">Günlük taze üretim, geleneksel tarifler. Güncel fiyatlar için bizi arayın.</p>
+        <p class="section-subtitle">Günlük taze üretim, geleneksel tarifler.</p>
       </div>
 
       <div class="menu-filters reveal">
@@ -1938,52 +1965,101 @@
         </div>
         <div class="menu-item reveal" data-category="pogaca">
           <div class="menu-item-info">
+            <div class="menu-item-name">Peynirli Poğaça</div>
+          </div>
+          <div class="menu-item-price">₺32</div>
+        </div>
+        <div class="menu-item reveal" data-category="pogaca">
+          <div class="menu-item-info">
+            <div class="menu-item-name">Kare Zeytinli Poğaça</div>
+          </div>
+          <div class="menu-item-price">₺32</div>
+        </div>
+        <div class="menu-item reveal" data-category="pogaca">
+          <div class="menu-item-info">
             <div class="menu-item-name">Susamlı Kaşarlı Poğaça</div>
-            <div class="menu-item-desc">Adet olarak servis edilir</div>
+          </div>
+          <div class="menu-item-price">₺40</div>
+        </div>
+        <div class="menu-item reveal" data-category="pogaca">
+          <div class="menu-item-info">
+            <div class="menu-item-name">Sosisli Poğaça</div>
+          </div>
+          <div class="menu-item-price">₺40</div>
+        </div>
+        <div class="menu-item reveal" data-category="pogaca">
+          <div class="menu-item-info">
+            <div class="menu-item-name">Ispanaklı Krem Peynirli Üçgen Poğaça</div>
+          </div>
+          <div class="menu-item-price">₺40</div>
+        </div>
+        <div class="menu-item reveal" data-category="pogaca">
+          <div class="menu-item-info">
+            <div class="menu-item-name">Üçgen Peynirli Poğaça</div>
           </div>
           <div class="menu-item-price">₺40</div>
         </div>
         <div class="menu-item reveal" data-category="pogaca">
           <div class="menu-item-info">
             <div class="menu-item-name">Sütlü Simit</div>
-            <div class="menu-item-desc">Adet olarak servis edilir</div>
           </div>
           <div class="menu-item-price">₺30</div>
         </div>
         <div class="menu-item reveal" data-category="pogaca">
           <div class="menu-item-info">
-            <div class="menu-item-name">Tereyağlı Simit</div>
-            <div class="menu-item-desc">Tereyağlı susamlı simit</div>
+            <div class="menu-item-name">Kazan Simiti</div>
           </div>
-          <div class="menu-item-price">₺40</div>
+          <div class="menu-item-price">₺30</div>
         </div>
 
         <!-- Börekler -->
         <div class="menu-item reveal" data-category="borek">
           <div class="menu-item-info">
             <div class="menu-item-name">Peynirli Gül Böreği</div>
-            <div class="menu-item-desc">Yufka hamuruyla fırın lezzeti, 1 kişilik</div>
           </div>
           <div class="menu-item-price">₺60</div>
         </div>
         <div class="menu-item reveal" data-category="borek">
           <div class="menu-item-info">
             <div class="menu-item-name">Patatesli Gül Böreği</div>
-            <div class="menu-item-desc">1 kişilik porsiyon</div>
           </div>
           <div class="menu-item-price">₺60</div>
         </div>
         <div class="menu-item reveal" data-category="borek">
           <div class="menu-item-info">
             <div class="menu-item-name">Ispanaklı Gül Böreği</div>
-            <div class="menu-item-desc">Yufka hamuruyla fırın lezzeti</div>
           </div>
           <div class="menu-item-price">₺60</div>
         </div>
         <div class="menu-item reveal" data-category="borek">
           <div class="menu-item-info">
+            <div class="menu-item-name">Üstü Eritme Kaşarlı Açma</div>
+          </div>
+          <div class="menu-item-price">₺80</div>
+        </div>
+        <div class="menu-item reveal" data-category="borek">
+          <div class="menu-item-info">
+            <div class="menu-item-name">Sigara Böreği</div>
+            <div class="menu-item-desc">Peynirli, adet</div>
+          </div>
+          <div class="menu-item-price">₺30</div>
+        </div>
+        <div class="menu-item reveal" data-category="borek">
+          <div class="menu-item-info">
+            <div class="menu-item-name">Patatesli Sigara Böreği</div>
+          </div>
+          <div class="menu-item-price">₺30</div>
+        </div>
+        <div class="menu-item reveal" data-category="borek">
+          <div class="menu-item-info">
+            <div class="menu-item-name">Ispanaklı Sigara Böreği</div>
+          </div>
+          <div class="menu-item-price">₺30</div>
+        </div>
+        <div class="menu-item reveal" data-category="borek">
+          <div class="menu-item-info">
             <div class="menu-item-name">Kızartma Sigara Böreği</div>
-            <div class="menu-item-desc">Peynirli veya patatesli, adet</div>
+            <div class="menu-item-desc">Peynirli veya patatesli</div>
           </div>
           <div class="menu-item-price">₺20</div>
         </div>
@@ -2091,21 +2167,21 @@
             <div class="menu-item-name">Tuzlu & Tatlı Kuru Pasta</div>
             <div class="menu-item-desc">500 gr. veya 1 kg. paket</div>
           </div>
-          <div class="menu-item-price">₺335 / ₺670</div>
+          <div class="menu-item-price">₺325 / ₺650</div>
         </div>
         <div class="menu-item reveal" data-category="kuru">
           <div class="menu-item-info">
             <div class="menu-item-name">Tatlı Kuru Pasta</div>
             <div class="menu-item-desc">500 gr. veya 1 kg. paket</div>
           </div>
-          <div class="menu-item-price">₺335 / ₺670</div>
+          <div class="menu-item-price">₺325 / ₺650</div>
         </div>
         <div class="menu-item reveal" data-category="kuru">
           <div class="menu-item-info">
             <div class="menu-item-name">Tuzlu Kuru Pasta</div>
             <div class="menu-item-desc">500 gr. veya 1 kg. paket</div>
           </div>
-          <div class="menu-item-price">₺335 / ₺670</div>
+          <div class="menu-item-price">₺325 / ₺650</div>
         </div>
         <div class="menu-item reveal" data-category="kuru">
           <div class="menu-item-info">
@@ -2119,10 +2195,37 @@
             <div class="menu-item-name">Çekirdekli Yaprak Galeta</div>
             <div class="menu-item-desc">500 gr. paketli ürün</div>
           </div>
-          <div class="menu-item-price">₺250</div>
+          <div class="menu-item-price">₺240</div>
         </div>
 
         <!-- İçecekler -->
+        <div class="menu-item reveal" data-category="icecek">
+          <div class="menu-item-info">
+            <div class="menu-item-name">Çay</div>
+            <div class="menu-item-desc">Demlik çay, bardak</div>
+          </div>
+          <div class="menu-item-price">₺30</div>
+        </div>
+        <div class="menu-item reveal" data-category="icecek">
+          <div class="menu-item-info">
+            <div class="menu-item-name">Türk Kahvesi</div>
+            <div class="menu-item-desc">Geleneksel pişirme</div>
+          </div>
+          <div class="menu-item-price">₺50</div>
+        </div>
+        <div class="menu-item reveal" data-category="icecek">
+          <div class="menu-item-info">
+            <div class="menu-item-name">Nescafe</div>
+          </div>
+          <div class="menu-item-price">₺50</div>
+        </div>
+        <div class="menu-item reveal" data-category="icecek">
+          <div class="menu-item-info">
+            <div class="menu-item-name">Sahlep</div>
+            <div class="menu-item-desc">Tarçınlı, sıcak</div>
+          </div>
+          <div class="menu-item-price">₺60</div>
+        </div>
         <div class="menu-item reveal" data-category="icecek">
           <div class="menu-item-info">
             <div class="menu-item-name">Dimes Şeftali (200ml)</div>
@@ -2150,9 +2253,9 @@
       </div>
 
       <div style="text-align:center; margin-top:56px;" class="reveal">
-        <a href="https://wa.me/905403143333?text=Merhaba%2C%20sipariş%20vermek%20istiyorum" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          WhatsApp'tan Sipariş Ver
+        <a href="https://ig.me/m/ferhatpatisserie" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          DM ile Sipariş Ver
         </a>
       </div>
     </div>
@@ -2401,8 +2504,8 @@
 
       <div class="platforms-grid">
         <a href="https://getir.com/yemek/restoran/ferhat-patisseria-akdeniz-nusratiye-mah-akdeniz-mersin/" class="platform-card reveal" target="_blank" rel="noopener noreferrer">
-          <div class="platform-icon platform-icon--getir">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M19 7h-3V5.5C16 4.12 14.88 3 13.5 3h-3C9.12 3 8 4.12 8 5.5V7H5c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zM10 5.5c0-.28.22-.5.5-.5h3c.28 0 .5.22.5.5V7h-4V5.5zM19 19H5v-2h14v2zm0-4H5V9h14v6z"/></svg>
+          <div class="platform-icon platform-icon--getir" style="background: none; padding: 0; overflow: hidden;">
+            <img src="images-enhanced/getir-icon.png" alt="Getir" width="44" height="44" style="border-radius: 12px; display: block;">
           </div>
           <div>
             <div class="platform-name">GetirYemek</div>
@@ -2412,8 +2515,8 @@
         </a>
 
         <a href="https://www.yemeksepeti.com/restaurant/locs/ferhat-patisserie" class="platform-card reveal reveal-delay-1" target="_blank" rel="noopener noreferrer">
-          <div class="platform-icon platform-icon--yemeksepeti">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/></svg>
+          <div class="platform-icon platform-icon--yemeksepeti" style="background: none; padding: 0; overflow: hidden;">
+            <img src="images-enhanced/yemeksepeti-icon.png" alt="Yemeksepeti" width="44" height="44" style="border-radius: 12px; display: block;">
           </div>
           <div>
             <div class="platform-name">Yemeksepeti</div>
@@ -2471,8 +2574,7 @@
               <div class="contact-item-label">Telefon</div>
               <div class="contact-item-value">
                 <a href="tel:+903243361074">0324 336 10 74</a><br>
-                <a href="tel:+905403143333">0540 314 33 33</a><br>
-                <a href="tel:+905533327048">0553 332 70 48</a>
+                <a href="tel:+905403143333">0540 314 33 33</a>
               </div>
             </div>
           </div>
@@ -2508,9 +2610,6 @@
             <a href="https://www.facebook.com/people/Ferhat-Patisserie/100067459909816/" target="_blank" rel="noopener noreferrer" title="Facebook">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
             </a>
-            <a href="https://wa.me/905403143333" target="_blank" rel="noopener noreferrer" title="WhatsApp">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            </a>
           </div>
         </div>
 
@@ -2539,9 +2638,6 @@
             </a>
             <a href="https://www.facebook.com/people/Ferhat-Patisserie/100067459909816/" target="_blank" rel="noopener noreferrer" title="Facebook">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-            </a>
-            <a href="https://wa.me/905403143333" target="_blank" rel="noopener noreferrer" title="WhatsApp">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
             </a>
           </div>
         </div>
@@ -2588,9 +2684,9 @@
   </a>
 
   <!-- ═══ WHATSAPP FLOAT ═══ -->
-  <a href="https://wa.me/905403143333?text=Merhaba%2C%20bilgi%20almak%20istiyorum" class="whatsapp-float" target="_blank" rel="noopener noreferrer" title="WhatsApp ile iletişime geçin">
-    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    <span class="whatsapp-tooltip">Bize yazın!</span>
+  <a href="tel:+903243361074" class="whatsapp-float" title="Bizi arayın">
+    <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+    <span class="whatsapp-tooltip">Bizi arayın</span>
   </a>
 
   <!-- ═══ JAVASCRIPT ═══ -->
@@ -2615,6 +2711,16 @@
       document.body.style.overflow = '';
     }
 
+    // Close mobile menu when clicking outside (on the overlay background)
+    document.getElementById('navLinks').addEventListener('click', function(e) {
+      if (e.target === this) closeMenu();
+    });
+
+    // Close mobile menu on scroll
+    window.addEventListener('scroll', function() {
+      if (document.getElementById('navLinks').classList.contains('open')) closeMenu();
+    }, { passive: true });
+
     // ── Menu filter with animation ──
     function filterMenu(category, btn) {
       const items = document.querySelectorAll('.menu-item');
@@ -2623,16 +2729,19 @@
       filters.forEach(f => f.classList.remove('active'));
       btn.classList.add('active');
 
-      items.forEach((item, i) => {
+      let visibleIndex = 0;
+      items.forEach((item) => {
         if (category === 'all' || item.dataset.category === category) {
           item.style.display = 'flex';
           item.style.opacity = '0';
           item.style.transform = 'translateY(16px)';
+          const delay = visibleIndex * 30;
+          visibleIndex++;
           setTimeout(() => {
             item.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
             item.style.opacity = '1';
             item.style.transform = 'translateY(0)';
-          }, i * 30);
+          }, delay);
         } else {
           item.style.display = 'none';
         }
