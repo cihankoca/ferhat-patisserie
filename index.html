@@ -8,7 +8,7 @@
   <meta property="og:title" content="Ferhat Patisserie — Pasta, Börek, Poğaça | Mersin">
   <meta property="og:description" content="24 saat açık pastane. Google'da 4.5 yıldız, 228 yorum. Yaş pasta, börek, poğaça, tatlı ve daha fazlası.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://img05.restaurantguru.com/re06-Ferhat-Patiserie-design.jpg">
+  <meta property="og:image" content="https://ferhat-patisserie.1cihankoca.workers.dev/images/hero-gece-dis-cephe.jpg">
   <link rel="icon" type="image/png" href="favicon-32.png">
   <link rel="apple-touch-icon" href="favicon.png">
 
@@ -823,14 +823,6 @@
       font-weight: 300;
     }
 
-    .menu-item-price {
-      font-family: var(--font-display);
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: var(--gold);
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
 
     .menu-item-tag {
       display: inline-block;
@@ -1758,6 +1750,18 @@
       .about-grid { gap: 48px; }
       .gallery-masonry { columns: 3; }
     }
+
+    /* ── Reduced motion: respect OS accessibility setting ── */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0ms !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+    }
   </style>
 </head>
 
@@ -1783,7 +1787,7 @@
   <!-- ═══ HERO ═══ -->
   <section class="hero">
     <div class="hero-bg">
-      <img src="https://img05.restaurantguru.com/re06-Ferhat-Patiserie-design.jpg"
+      <img src="images/hero-gece-dis-cephe.jpg"
            alt="Ferhat Patisserie — gece dış cephe"
            loading="eager"
            fetchpriority="high">
@@ -1961,55 +1965,46 @@
             <div class="menu-item-name">Sade Poğaça<span class="menu-item-tag">Popüler</span></div>
             <div class="menu-item-desc">Taş fırında, günlük taze</div>
           </div>
-          <div class="menu-item-price">₺30</div>
         </div>
         <div class="menu-item reveal" data-category="pogaca">
           <div class="menu-item-info">
             <div class="menu-item-name">Peynirli Poğaça</div>
           </div>
-          <div class="menu-item-price">₺32</div>
         </div>
         <div class="menu-item reveal" data-category="pogaca">
           <div class="menu-item-info">
             <div class="menu-item-name">Kare Zeytinli Poğaça</div>
           </div>
-          <div class="menu-item-price">₺32</div>
         </div>
         <div class="menu-item reveal" data-category="pogaca">
           <div class="menu-item-info">
             <div class="menu-item-name">Susamlı Kaşarlı Poğaça</div>
           </div>
-          <div class="menu-item-price">₺40</div>
         </div>
         <div class="menu-item reveal" data-category="pogaca">
           <div class="menu-item-info">
             <div class="menu-item-name">Sosisli Poğaça</div>
           </div>
-          <div class="menu-item-price">₺40</div>
         </div>
         <div class="menu-item reveal" data-category="pogaca">
           <div class="menu-item-info">
             <div class="menu-item-name">Ispanaklı Krem Peynirli Üçgen Poğaça</div>
           </div>
-          <div class="menu-item-price">₺40</div>
         </div>
         <div class="menu-item reveal" data-category="pogaca">
           <div class="menu-item-info">
             <div class="menu-item-name">Üçgen Peynirli Poğaça</div>
           </div>
-          <div class="menu-item-price">₺40</div>
         </div>
         <div class="menu-item reveal" data-category="pogaca">
           <div class="menu-item-info">
             <div class="menu-item-name">Sütlü Simit</div>
           </div>
-          <div class="menu-item-price">₺30</div>
         </div>
         <div class="menu-item reveal" data-category="pogaca">
           <div class="menu-item-info">
             <div class="menu-item-name">Kazan Simiti</div>
           </div>
-          <div class="menu-item-price">₺30</div>
         </div>
 
         <!-- Börekler -->
@@ -2017,51 +2012,43 @@
           <div class="menu-item-info">
             <div class="menu-item-name">Peynirli Gül Böreği</div>
           </div>
-          <div class="menu-item-price">₺60</div>
         </div>
         <div class="menu-item reveal" data-category="borek">
           <div class="menu-item-info">
             <div class="menu-item-name">Patatesli Gül Böreği</div>
           </div>
-          <div class="menu-item-price">₺60</div>
         </div>
         <div class="menu-item reveal" data-category="borek">
           <div class="menu-item-info">
             <div class="menu-item-name">Ispanaklı Gül Böreği</div>
           </div>
-          <div class="menu-item-price">₺60</div>
         </div>
         <div class="menu-item reveal" data-category="borek">
           <div class="menu-item-info">
             <div class="menu-item-name">Üstü Eritme Kaşarlı Açma</div>
           </div>
-          <div class="menu-item-price">₺80</div>
         </div>
         <div class="menu-item reveal" data-category="borek">
           <div class="menu-item-info">
             <div class="menu-item-name">Sigara Böreği</div>
             <div class="menu-item-desc">Peynirli, adet</div>
           </div>
-          <div class="menu-item-price">₺30</div>
         </div>
         <div class="menu-item reveal" data-category="borek">
           <div class="menu-item-info">
             <div class="menu-item-name">Patatesli Sigara Böreği</div>
           </div>
-          <div class="menu-item-price">₺30</div>
         </div>
         <div class="menu-item reveal" data-category="borek">
           <div class="menu-item-info">
             <div class="menu-item-name">Ispanaklı Sigara Böreği</div>
           </div>
-          <div class="menu-item-price">₺30</div>
         </div>
         <div class="menu-item reveal" data-category="borek">
           <div class="menu-item-info">
             <div class="menu-item-name">Kızartma Sigara Böreği</div>
             <div class="menu-item-desc">Peynirli veya patatesli</div>
           </div>
-          <div class="menu-item-price">₺20</div>
         </div>
 
         <!-- Pastalar -->
@@ -2070,42 +2057,36 @@
             <div class="menu-item-name">Çikolatalı Pasta (1 Kişilik)</div>
             <div class="menu-item-desc">Bireysel porsiyon</div>
           </div>
-          <div class="menu-item-price">₺200</div>
         </div>
         <div class="menu-item reveal" data-category="pasta">
           <div class="menu-item-info">
             <div class="menu-item-name">Lotuslu Frambuazlı Pasta<span class="menu-item-tag">Popüler</span></div>
             <div class="menu-item-desc">4-6 Kişilik</div>
           </div>
-          <div class="menu-item-price">₺850</div>
         </div>
         <div class="menu-item reveal" data-category="pasta">
           <div class="menu-item-info">
             <div class="menu-item-name">Çilekli / Fıstıklı Çikolatalı Pasta</div>
             <div class="menu-item-desc">4-6 Kişilik</div>
           </div>
-          <div class="menu-item-price">₺800</div>
         </div>
         <div class="menu-item reveal" data-category="pasta">
           <div class="menu-item-info">
             <div class="menu-item-name">Meyveli / Mois Pasta</div>
             <div class="menu-item-desc">4-6 Kişilik · Mevsim meyveleri</div>
           </div>
-          <div class="menu-item-price">₺800 – ₺850</div>
         </div>
         <div class="menu-item reveal" data-category="pasta">
           <div class="menu-item-info">
             <div class="menu-item-name">Yaş Pasta (6-8 Kişilik)</div>
             <div class="menu-item-desc">Tüm çeşitler 6-8 kişilik boy</div>
           </div>
-          <div class="menu-item-price">₺900 – ₺950</div>
         </div>
         <div class="menu-item reveal" data-category="pasta">
           <div class="menu-item-info">
             <div class="menu-item-name">Konsept Pasta<span class="menu-item-tag">Sipariş</span></div>
             <div class="menu-item-desc">Doğum günü, nişan, özel tasarım — DM ile sipariş</div>
           </div>
-          <div class="menu-item-price">Fiyat sorunuz</div>
         </div>
 
         <!-- Tatlılar -->
@@ -2114,35 +2095,30 @@
             <div class="menu-item-name">Meyveli Kek</div>
             <div class="menu-item-desc">Mevsim meyveleriyle</div>
           </div>
-          <div class="menu-item-price">₺60</div>
         </div>
         <div class="menu-item reveal" data-category="tatli">
           <div class="menu-item-info">
             <div class="menu-item-name">Güveçte Fırın Sütlaç</div>
             <div class="menu-item-desc">Güveçte servis edilmektedir</div>
           </div>
-          <div class="menu-item-price">₺160</div>
         </div>
         <div class="menu-item reveal" data-category="tatli">
           <div class="menu-item-info">
             <div class="menu-item-name">Karamelli Trileçe</div>
             <div class="menu-item-desc">Özel sert kabında korunarak gelir</div>
           </div>
-          <div class="menu-item-price">₺160</div>
         </div>
         <div class="menu-item reveal" data-category="tatli">
           <div class="menu-item-info">
             <div class="menu-item-name">Çilekli Magnolya</div>
             <div class="menu-item-desc">Cam kavanozda kendi kapağıyla</div>
           </div>
-          <div class="menu-item-price">₺160</div>
         </div>
         <div class="menu-item reveal" data-category="tatli">
           <div class="menu-item-info">
             <div class="menu-item-name">Islak Kek</div>
             <div class="menu-item-desc">Özel sert kabında korunarak gelir</div>
           </div>
-          <div class="menu-item-price">₺160</div>
         </div>
 
         <!-- Ekler -->
@@ -2151,14 +2127,12 @@
             <div class="menu-item-name">Çikolatalı Ekler</div>
             <div class="menu-item-desc">500 gr. veya 1 kg.</div>
           </div>
-          <div class="menu-item-price">₺325 / ₺650</div>
         </div>
         <div class="menu-item reveal" data-category="ekler">
           <div class="menu-item-info">
             <div class="menu-item-name">Frambuazlı Ekler</div>
             <div class="menu-item-desc">500 gr. veya 1 kg.</div>
           </div>
-          <div class="menu-item-price">₺325 / ₺650</div>
         </div>
 
         <!-- Kuru Pasta -->
@@ -2167,35 +2141,30 @@
             <div class="menu-item-name">Tuzlu & Tatlı Kuru Pasta</div>
             <div class="menu-item-desc">500 gr. veya 1 kg. paket</div>
           </div>
-          <div class="menu-item-price">₺325 / ₺650</div>
         </div>
         <div class="menu-item reveal" data-category="kuru">
           <div class="menu-item-info">
             <div class="menu-item-name">Tatlı Kuru Pasta</div>
             <div class="menu-item-desc">500 gr. veya 1 kg. paket</div>
           </div>
-          <div class="menu-item-price">₺325 / ₺650</div>
         </div>
         <div class="menu-item reveal" data-category="kuru">
           <div class="menu-item-info">
             <div class="menu-item-name">Tuzlu Kuru Pasta</div>
             <div class="menu-item-desc">500 gr. veya 1 kg. paket</div>
           </div>
-          <div class="menu-item-price">₺325 / ₺650</div>
         </div>
         <div class="menu-item reveal" data-category="kuru">
           <div class="menu-item-info">
             <div class="menu-item-name">Susamlı Çubuk Galeta</div>
             <div class="menu-item-desc">500 gr. paketli ürün</div>
           </div>
-          <div class="menu-item-price">₺200</div>
         </div>
         <div class="menu-item reveal" data-category="kuru">
           <div class="menu-item-info">
             <div class="menu-item-name">Çekirdekli Yaprak Galeta</div>
             <div class="menu-item-desc">500 gr. paketli ürün</div>
           </div>
-          <div class="menu-item-price">₺240</div>
         </div>
 
         <!-- İçecekler -->
@@ -2204,51 +2173,43 @@
             <div class="menu-item-name">Çay</div>
             <div class="menu-item-desc">Demlik çay, bardak</div>
           </div>
-          <div class="menu-item-price">₺30</div>
         </div>
         <div class="menu-item reveal" data-category="icecek">
           <div class="menu-item-info">
             <div class="menu-item-name">Türk Kahvesi</div>
             <div class="menu-item-desc">Geleneksel pişirme</div>
           </div>
-          <div class="menu-item-price">₺50</div>
         </div>
         <div class="menu-item reveal" data-category="icecek">
           <div class="menu-item-info">
             <div class="menu-item-name">Nescafe</div>
           </div>
-          <div class="menu-item-price">₺50</div>
         </div>
         <div class="menu-item reveal" data-category="icecek">
           <div class="menu-item-info">
             <div class="menu-item-name">Sahlep</div>
             <div class="menu-item-desc">Tarçınlı, sıcak</div>
           </div>
-          <div class="menu-item-price">₺60</div>
         </div>
         <div class="menu-item reveal" data-category="icecek">
           <div class="menu-item-info">
             <div class="menu-item-name">Dimes Şeftali (200ml)</div>
           </div>
-          <div class="menu-item-price">₺25</div>
         </div>
         <div class="menu-item reveal" data-category="icecek">
           <div class="menu-item-info">
             <div class="menu-item-name">Dimes Kayısı (200ml)</div>
           </div>
-          <div class="menu-item-price">₺25</div>
         </div>
         <div class="menu-item reveal" data-category="icecek">
           <div class="menu-item-info">
             <div class="menu-item-name">Dimes Vişne (200ml)</div>
           </div>
-          <div class="menu-item-price">₺25</div>
         </div>
         <div class="menu-item reveal" data-category="icecek">
           <div class="menu-item-info">
             <div class="menu-item-name">Dimes Karışık (200ml)</div>
           </div>
-          <div class="menu-item-price">₺25</div>
         </div>
       </div>
 
@@ -2388,7 +2349,7 @@
       </div>
       <div class="about-grid">
         <div class="about-image reveal clip-reveal">
-          <img src="https://img02.restaurantguru.com/c098-Desserts-Ferhat-Patiserie-exterior.jpg" alt="Ferhat Patisserie Dış Görünüm" loading="lazy">
+          <img src="images/about-dis-gorunum.jpg" alt="Ferhat Patisserie Dış Görünüm" loading="lazy">
           <div class="about-image-badge">
             <div class="number">228</div>
             <div class="label">Google Yorumu</div>
