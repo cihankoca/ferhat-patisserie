@@ -1,0 +1,27 @@
+# Files that must NOT be served as static assets by the Worker.
+src/
+node_modules/
+.wrangler/
+.git/
+.github/
+wrangler.jsonc
+package.json
+package-lock.json
+.dev.vars
+.dev.vars.*
+*.md
+*.docx
+*.py
+*.pyc
+__pycache__/
+crop-test/
+photo-audit/
+instagram-photos/
+ss-*.png
+screenshot-*.png
+verify-*.png
+audit-*.png
+yon-*.png
+sistem-nasil-calisiyor.html
+TASARIM-YONLERI.html
+test_site.py

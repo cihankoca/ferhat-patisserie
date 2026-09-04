@@ -1,0 +1,34 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ferhat-patisserie",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-07-22",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+  "assets": {
+    "directory": ".",
+    "binding": "ASSETS",
+    "not_found_handling": "none",
+    // Run the Worker for every request so security headers are applied to static pages too.
+    "run_worker_first": true
+  },
+  "r2_buckets": [
+    { "binding": "PHOTOS", "bucket_name": "ferhat-talep" }
+  ],
+  "kv_namespaces": [
+    // Replace `id` with the real namespace id after `wrangler kv namespace create STATE`.
+    // Local dev (`wrangler dev`) works with this placeholder.
+    { "binding": "STATE", "id": "00000000000000000000000000000000" }
+  ],
+  "vars": {
+    // Public, non-secret configuration. Secrets go in `wrangler secret put` / .dev.vars:
+    //   AIRTABLE_TOKEN, RESEND_API_KEY
+    "AIRTABLE_BASE": "",
+    "AIRTABLE_TABLE": "Talepler",
+    "MAIL_FROM": "",
+    "OWNER_EMAIL": "",
+    "MAIL_REPLY_TO": "",
+    "PHOTO_PUBLIC_BASE": "",
+    "ALLOWED_ORIGINS": ""
+  }
+}
