@@ -16,3 +16,16 @@ instagram-photos/
 # OS
 .DS_Store
 Thumbs.db
+
+# Internal — satis, fiyat, strateji notlari. ASLA public repoya gitmesin.
+FERHAT-YAPILACAKLAR.md
+SATIS-DOKUMANI.md
+*.docx
+audit-*.png
+sistem-nasil-calisiyor.html
+
+# Worker / tooling
+node_modules/
+.wrangler/
+.dev.vars
+.dev.vars.*

@@ -8,12 +8,15 @@
   <meta property="og:title" content="Ferhat Patisserie — Pasta, Börek, Poğaça | Mersin">
   <meta property="og:description" content="24 saat açık pastane. Google'da 4.5 yıldız, 228 yorum. Yaş pasta, börek, poğaça, tatlı ve daha fazlası.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://img05.restaurantguru.com/re06-Ferhat-Patiserie-design.jpg">
+  <meta property="og:image" content="https://ferhat-patisserie.1cihankoca.workers.dev/images/hero-gece-dis-cephe.jpg">
   <link rel="icon" type="image/png" href="favicon-32.png">
   <link rel="apple-touch-icon" href="favicon.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="assets/form.css">
+  <link rel="stylesheet" href="assets/pickers.css">
+  <link rel="stylesheet" href="assets/chat.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -321,53 +324,114 @@
     /* Mobile toggle */
     .nav-toggle {
       display: none;
-      flex-direction: column;
-      gap: 5px;
+      position: relative;
+      width: 44px;
+      height: 44px;
       cursor: pointer;
       background: none;
       border: none;
-      padding: 8px;
+      padding: 0;
       z-index: 1001;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .nav-toggle span {
-      width: 22px;
-      height: 1.5px;
+      position: absolute;
+      left: 10px;
+      width: 24px;
+      height: 2px;
+      border-radius: 2px;
       background: var(--white);
-      transition: all 0.4s var(--ease-out-expo);
-      transform-origin: center;
+      transition: transform 0.45s var(--ease-out-expo), opacity 0.25s ease, top 0.45s var(--ease-out-expo);
     }
 
-    .nav-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(4.5px, 4.5px); }
-    .nav-toggle.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-    .nav-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(4.5px, -4.5px); }
+    .nav-toggle span:nth-child(1) { top: 14px; }
+    .nav-toggle span:nth-child(2) { top: 21px; }
+    .nav-toggle span:nth-child(3) { top: 28px; }
+
+    .nav-toggle.active span:nth-child(1) { top: 21px; transform: rotate(45deg); }
+    .nav-toggle.active span:nth-child(2) { opacity: 0; transform: scaleX(0.4); }
+    .nav-toggle.active span:nth-child(3) { top: 21px; transform: rotate(-45deg); }
+
+    .nav-mobile-foot { display: none; }
 
     @media (max-width: 768px) {
       .nav-links {
         position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(10, 10, 10, 0.97);
-        backdrop-filter: blur(30px);
+        inset: 0;
+        padding: calc(var(--nav-height) + 28px) 28px 32px;
+        background: linear-gradient(180deg, #0a0a0a 0%, #1a1410 100%);
         flex-direction: column;
-        justify-content: center;
-        gap: 36px;
+        justify-content: flex-start;
+        align-items: stretch;
+        gap: 0;
         transform: translateX(100%);
         transition: transform 0.6s var(--ease-out-expo);
+        overflow-y: auto;
       }
 
       .nav-links.open { transform: translateX(0); }
 
+      .nav-links li {
+        border-bottom: 1px solid rgba(250, 246, 240, 0.08);
+        opacity: 0;
+        transform: translateY(14px);
+        transition: opacity 0.5s ease, transform 0.6s var(--ease-out-expo);
+      }
+      .nav-links.open li { opacity: 1; transform: none; }
+      .nav-links.open li:nth-child(1) { transition-delay: 0.10s; }
+      .nav-links.open li:nth-child(2) { transition-delay: 0.15s; }
+      .nav-links.open li:nth-child(3) { transition-delay: 0.20s; }
+      .nav-links.open li:nth-child(4) { transition-delay: 0.25s; }
+      .nav-links.open li:nth-child(5) { transition-delay: 0.30s; }
+      .nav-links.open li:nth-child(6) { transition-delay: 0.35s; }
+      .nav-links.open li:nth-child(7) { transition-delay: 0.45s; }
+
       .nav-links a {
-        font-size: 1.1rem;
+        display: block;
+        padding: 18px 0;
+        font-size: 1.7rem;
         font-family: var(--font-display);
-        letter-spacing: 0.05em;
-        color: rgba(255,255,255,0.9);
+        font-weight: 500;
+        letter-spacing: 0.01em;
+        text-transform: none;
+        color: var(--ivory);
+      }
+      .nav-links a::after { display: none; }
+      .nav-links li:nth-child(5) a { color: var(--gold-light); }
+
+      .nav-mobile-foot {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        margin-top: auto;
+        padding-top: 28px;
+        border-bottom: none;
+      }
+      .nav-mobile-foot .nav-call {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 15px 20px;
+        border-radius: 100px;
+        background: var(--gold);
+        color: var(--noir);
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+      }
+      .nav-mobile-foot .nav-call svg { width: 18px; height: 18px; }
+      .nav-mobile-foot small {
+        font-size: 0.78rem;
+        color: rgba(250, 246, 240, 0.55);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        text-align: center;
       }
 
-      .nav-toggle { display: flex; }
+      .nav-toggle { display: block; }
       .nav-badge { display: none; }
     }
 
@@ -400,6 +464,10 @@
     @keyframes hero-drift {
       0% { transform: scale(1.02) translate(0, 0); }
       100% { transform: scale(1.08) translate(-1%, -1%); }
+    }
+
+    @media (max-width: 768px) {
+      .hero-bg img { animation: none; transform: none; will-change: auto; }
     }
 
     .hero-overlay {
@@ -823,14 +891,6 @@
       font-weight: 300;
     }
 
-    .menu-item-price {
-      font-family: var(--font-display);
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: var(--gold);
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
 
     .menu-item-tag {
       display: inline-block;
@@ -1366,9 +1426,7 @@
     }
 
     .platform-icon--getir { background: #5D3EBC; }
-    .platform-icon--yemeksepeti { background: #E81F2E; }
     .platform-icon--instagram { background: linear-gradient(135deg, #F58529, #DD2A7B, #8134AF); }
-    .platform-icon--facebook { background: #1877F2; }
 
     .platform-name {
       color: var(--ivory);
@@ -1428,14 +1486,17 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.2rem;
+      color: var(--gold);
       flex-shrink: 0;
-      transition: all 0.3s;
+      transition: border-color 0.3s, background 0.3s, color 0.3s;
     }
+
+    .contact-item-icon svg { width: 22px; height: 22px; }
 
     .contact-item:hover .contact-item-icon {
       border-color: var(--gold);
       background: rgba(201, 169, 110, 0.06);
+      color: var(--noir-warm);
     }
 
     .contact-item-label {
@@ -1678,6 +1739,17 @@
       box-shadow: 0 10px 36px rgba(201, 169, 110, 0.5);
     }
 
+    @media (max-width: 768px) {
+      .whatsapp-float, .request-float { animation-delay: 0.05s; }
+      body.in-hero .whatsapp-float,
+      body.in-hero .request-float {
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(18px) scale(0.9);
+        animation: none;
+      }
+    }
+
     .whatsapp-float svg {
       width: 26px;
       height: 26px;
@@ -1704,40 +1776,6 @@
 
     .whatsapp-float:hover .whatsapp-tooltip { opacity: 1; }
 
-    /* ── Instagram DM Float ── */
-    .instagram-float {
-      position: fixed;
-      bottom: 96px;
-      right: 28px;
-      z-index: 997;
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #F58529, #DD2A7B, #8134AF, #515BD4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      text-decoration: none;
-      box-shadow: 0 6px 24px rgba(221, 42, 123, 0.35);
-      transition: all 0.4s var(--ease-out-expo);
-      animation: wa-entrance 0.7s var(--ease-out-expo) 1.8s both;
-    }
-
-    .instagram-float:hover {
-      transform: scale(1.12);
-      box-shadow: 0 10px 36px rgba(221, 42, 123, 0.5);
-    }
-
-    .instagram-float svg {
-      width: 26px;
-      height: 26px;
-      fill: white;
-    }
-
-    .instagram-float .whatsapp-tooltip {
-      right: 64px;
-    }
 
     /* ═══════════════════════
        RESPONSIVE FINE-TUNING
@@ -1758,6 +1796,18 @@
       .about-grid { gap: 48px; }
       .gallery-masonry { columns: 3; }
     }
+
+    /* ── Reduced motion: respect OS accessibility setting ── */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0ms !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+    }
   </style>
 </head>
 
@@ -1766,13 +1816,18 @@
   <!-- ═══ NAVIGATION ═══ -->
   <nav class="nav" id="nav">
     <div class="nav-inner">
-      <a href="#" class="nav-logo"><img src="images-enhanced/profil-nav.png" alt="Ferhat Patisserie" class="nav-logo-img">Ferhat <span>Patisserie</span></a>
+      <a href="#" class="nav-logo"><img src="images-enhanced/profil-nav.png" alt="Ferhat Patisserie" class="nav-logo-img" width="96" height="96">Ferhat <span>Patisserie</span></a>
       <ul class="nav-links" id="navLinks">
         <li><a href="#menu" onclick="closeMenu()">Menü</a></li>
         <li><a href="#galeri" onclick="closeMenu()">Galeri</a></li>
         <li><a href="#hakkimizda" onclick="closeMenu()">Hakkımızda</a></li>
         <li><a href="#yorumlar" onclick="closeMenu()">Yorumlar</a></li>
+        <li><a href="#talep" onclick="closeMenu()">Sipariş Talebi</a></li>
         <li><a href="#iletisim" onclick="closeMenu()">İletişim</a></li>
+        <li class="nav-mobile-foot">
+          <a href="tel:+905403143333" class="nav-call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 3.5h3l1.6 4-2 1.3a11 11 0 0 0 6.1 6.1l1.3-2 4 1.6v3a2 2 0 0 1-2.2 2A15.5 15.5 0 0 1 3.5 5.7a2 2 0 0 1 2-2.2z"/></svg>0540 314 33 33</a>
+          <small>24 saat açık · Her gün · Mersin</small>
+        </li>
       </ul>
       <button class="nav-toggle" id="navToggle" onclick="toggleMenu()" aria-label="Menu">
         <span></span><span></span><span></span>
@@ -1783,10 +1838,10 @@
   <!-- ═══ HERO ═══ -->
   <section class="hero">
     <div class="hero-bg">
-      <img src="https://img05.restaurantguru.com/re06-Ferhat-Patiserie-design.jpg"
+      <picture><source media="(max-width: 768px)" srcset="images/hero-gece-dis-cephe-mobile.jpg"><img src="images/hero-gece-dis-cephe.jpg"
            alt="Ferhat Patisserie — gece dış cephe"
            loading="eager"
-           fetchpriority="high">
+           fetchpriority="high" width="1680" height="1260"></picture>
     </div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
@@ -1804,9 +1859,9 @@
         Pasta · Börek · Poğaça · Kurabiye · Simit — her gün taze.
       </p>
       <div class="hero-actions">
-        <a href="https://ig.me/m/ferhatpatisserie" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-          DM ile Sipariş
+        <a href="#talep" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"/><path d="M2 21h20"/><path d="M7 8v3"/><path d="M12 8v3"/><path d="M17 8v3"/><path d="M7 4h.01"/><path d="M12 4h.01"/><path d="M17 4h.01"/></svg>
+          Özel Sipariş Talebi
         </a>
         <a href="#menu" class="btn btn-outline">Menüyü Gör</a>
       </div>
@@ -1822,74 +1877,14 @@
     <div class="trust-track">
       <div class="trust-content">
         <span class="trust-item">
-          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          Google'da 4.5 Yıldız
-        </span>
-        <span class="trust-dot"></span>
-        <span class="trust-item">
-          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-          228 Müşteri Yorumu
-        </span>
-        <span class="trust-dot"></span>
-        <span class="trust-item">
-          <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-          24 Saat Açık
-        </span>
-        <span class="trust-dot"></span>
-        <span class="trust-item">
-          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
-          Kredi Kartı Geçerli
-        </span>
-        <span class="trust-dot"></span>
-        <span class="trust-item">
-          <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
-          Ücretsiz Wi-Fi
-        </span>
-        <span class="trust-dot"></span>
-        <span class="trust-item">
           <img src="images-enhanced/getir-icon.png" alt="Getir" width="18" height="18" style="border-radius: 4px; vertical-align: middle;">
           GetirYemek
-        </span>
-        <span class="trust-dot"></span>
-        <span class="trust-item">
-          <img src="images-enhanced/yemeksepeti-icon.png" alt="Yemeksepeti" width="18" height="18" style="border-radius: 4px; vertical-align: middle;">
-          Yemeksepeti
         </span>
       </div>
       <div class="trust-content" aria-hidden="true">
         <span class="trust-item">
-          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          Google'da 4.5 Yıldız
-        </span>
-        <span class="trust-dot"></span>
-        <span class="trust-item">
-          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-          228 Müşteri Yorumu
-        </span>
-        <span class="trust-dot"></span>
-        <span class="trust-item">
-          <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-          24 Saat Açık
-        </span>
-        <span class="trust-dot"></span>
-        <span class="trust-item">
-          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
-          Kredi Kartı Geçerli
-        </span>
-        <span class="trust-dot"></span>
-        <span class="trust-item">
-          <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
-          Ücretsiz Wi-Fi
-        </span>
-        <span class="trust-dot"></span>
-        <span class="trust-item">
           <img src="images-enhanced/getir-icon.png" alt="Getir" width="18" height="18" style="border-radius: 4px; vertical-align: middle;">
           GetirYemek
-        </span>
-        <span class="trust-dot"></span>
-        <span class="trust-item">
-          <img src="images-enhanced/yemeksepeti-icon.png" alt="Yemeksepeti" width="18" height="18" style="border-radius: 4px; vertical-align: middle;">
-          Yemeksepeti
         </span>
       </div>
     </div>
@@ -1910,21 +1905,21 @@
       </div>
       <div class="features-grid">
         <div class="feature-card reveal reveal-delay-1">
-          <div class="feature-card-img"><img src="images-enhanced/gold-macaron.jpg" alt="Özel gün pastası — makaronlu tasarım" loading="lazy"></div>
+          <div class="feature-card-img"><img src="images-enhanced/gold-macaron.jpg" alt="Özel gün pastası — makaronlu tasarım" loading="lazy" width="500" height="679"></div>
           <div class="feature-card-body">
             <h3>Özel Gün Pastaları</h3>
             <p>Doğum günü, nişan, düğün — konsept pasta siparişleriniz özenle hazırlanır.</p>
           </div>
         </div>
         <div class="feature-card reveal reveal-delay-2">
-          <div class="feature-card-img"><img src="images-enhanced/pogaca-stock.jpg" alt="Taze poğaça — susamlı, fırından" loading="lazy"></div>
+          <div class="feature-card-img"><img src="images-enhanced/pogaca-stock.jpg" alt="Taze poğaça — susamlı, fırından" loading="lazy" width="800" height="495"></div>
           <div class="feature-card-body">
             <h3>Taze Börek & Poğaça</h3>
             <p>Her sabah fırından çıkan el açması börekler ve çeşit çeşit poğaçalar.</p>
           </div>
         </div>
         <div class="feature-card reveal reveal-delay-3">
-          <div class="feature-card-img"><img src="images-enhanced/ekler-stock2.jpg" alt="Tatlılar ve ekler" loading="lazy"></div>
+          <div class="feature-card-img"><img src="images-enhanced/ekler-stock2.jpg" alt="Tatlılar ve ekler" loading="lazy" width="800" height="485"></div>
           <div class="feature-card-body">
             <h3>Tatlılar & Ekler</h3>
             <p>Trileçe, magnolya, sütlaç, ıslak kek ve çikolatalı ekler.</p>
@@ -1961,55 +1956,46 @@
             <div class="menu-item-name">Sade Poğaça<span class="menu-item-tag">Popüler</span></div>
             <div class="menu-item-desc">Taş fırında, günlük taze</div>
           </div>
-          <div class="menu-item-price">₺30</div>
         </div>
         <div class="menu-item reveal" data-category="pogaca">
           <div class="menu-item-info">
             <div class="menu-item-name">Peynirli Poğaça</div>
           </div>
-          <div class="menu-item-price">₺32</div>
         </div>
         <div class="menu-item reveal" data-category="pogaca">
           <div class="menu-item-info">
             <div class="menu-item-name">Kare Zeytinli Poğaça</div>
           </div>
-          <div class="menu-item-price">₺32</div>
         </div>
         <div class="menu-item reveal" data-category="pogaca">
           <div class="menu-item-info">
             <div class="menu-item-name">Susamlı Kaşarlı Poğaça</div>
           </div>
-          <div class="menu-item-price">₺40</div>
         </div>
         <div class="menu-item reveal" data-category="pogaca">
           <div class="menu-item-info">
             <div class="menu-item-name">Sosisli Poğaça</div>
           </div>
-          <div class="menu-item-price">₺40</div>
         </div>
         <div class="menu-item reveal" data-category="pogaca">
           <div class="menu-item-info">
             <div class="menu-item-name">Ispanaklı Krem Peynirli Üçgen Poğaça</div>
           </div>
-          <div class="menu-item-price">₺40</div>
         </div>
         <div class="menu-item reveal" data-category="pogaca">
           <div class="menu-item-info">
             <div class="menu-item-name">Üçgen Peynirli Poğaça</div>
           </div>
-          <div class="menu-item-price">₺40</div>
         </div>
         <div class="menu-item reveal" data-category="pogaca">
           <div class="menu-item-info">
             <div class="menu-item-name">Sütlü Simit</div>
           </div>
-          <div class="menu-item-price">₺30</div>
         </div>
         <div class="menu-item reveal" data-category="pogaca">
           <div class="menu-item-info">
             <div class="menu-item-name">Kazan Simiti</div>
           </div>
-          <div class="menu-item-price">₺30</div>
         </div>
 
         <!-- Börekler -->
@@ -2017,51 +2003,43 @@
           <div class="menu-item-info">
             <div class="menu-item-name">Peynirli Gül Böreği</div>
           </div>
-          <div class="menu-item-price">₺60</div>
         </div>
         <div class="menu-item reveal" data-category="borek">
           <div class="menu-item-info">
             <div class="menu-item-name">Patatesli Gül Böreği</div>
           </div>
-          <div class="menu-item-price">₺60</div>
         </div>
         <div class="menu-item reveal" data-category="borek">
           <div class="menu-item-info">
             <div class="menu-item-name">Ispanaklı Gül Böreği</div>
           </div>
-          <div class="menu-item-price">₺60</div>
         </div>
         <div class="menu-item reveal" data-category="borek">
           <div class="menu-item-info">
             <div class="menu-item-name">Üstü Eritme Kaşarlı Açma</div>
           </div>
-          <div class="menu-item-price">₺80</div>
         </div>
         <div class="menu-item reveal" data-category="borek">
           <div class="menu-item-info">
             <div class="menu-item-name">Sigara Böreği</div>
             <div class="menu-item-desc">Peynirli, adet</div>
           </div>
-          <div class="menu-item-price">₺30</div>
         </div>
         <div class="menu-item reveal" data-category="borek">
           <div class="menu-item-info">
             <div class="menu-item-name">Patatesli Sigara Böreği</div>
           </div>
-          <div class="menu-item-price">₺30</div>
         </div>
         <div class="menu-item reveal" data-category="borek">
           <div class="menu-item-info">
             <div class="menu-item-name">Ispanaklı Sigara Böreği</div>
           </div>
-          <div class="menu-item-price">₺30</div>
         </div>
         <div class="menu-item reveal" data-category="borek">
           <div class="menu-item-info">
             <div class="menu-item-name">Kızartma Sigara Böreği</div>
             <div class="menu-item-desc">Peynirli veya patatesli</div>
           </div>
-          <div class="menu-item-price">₺20</div>
         </div>
 
         <!-- Pastalar -->
@@ -2070,42 +2048,36 @@
             <div class="menu-item-name">Çikolatalı Pasta (1 Kişilik)</div>
             <div class="menu-item-desc">Bireysel porsiyon</div>
           </div>
-          <div class="menu-item-price">₺200</div>
         </div>
         <div class="menu-item reveal" data-category="pasta">
           <div class="menu-item-info">
             <div class="menu-item-name">Lotuslu Frambuazlı Pasta<span class="menu-item-tag">Popüler</span></div>
             <div class="menu-item-desc">4-6 Kişilik</div>
           </div>
-          <div class="menu-item-price">₺850</div>
         </div>
         <div class="menu-item reveal" data-category="pasta">
           <div class="menu-item-info">
             <div class="menu-item-name">Çilekli / Fıstıklı Çikolatalı Pasta</div>
             <div class="menu-item-desc">4-6 Kişilik</div>
           </div>
-          <div class="menu-item-price">₺800</div>
         </div>
         <div class="menu-item reveal" data-category="pasta">
           <div class="menu-item-info">
             <div class="menu-item-name">Meyveli / Mois Pasta</div>
             <div class="menu-item-desc">4-6 Kişilik · Mevsim meyveleri</div>
           </div>
-          <div class="menu-item-price">₺800 – ₺850</div>
         </div>
         <div class="menu-item reveal" data-category="pasta">
           <div class="menu-item-info">
             <div class="menu-item-name">Yaş Pasta (6-8 Kişilik)</div>
             <div class="menu-item-desc">Tüm çeşitler 6-8 kişilik boy</div>
           </div>
-          <div class="menu-item-price">₺900 – ₺950</div>
         </div>
         <div class="menu-item reveal" data-category="pasta">
           <div class="menu-item-info">
             <div class="menu-item-name">Konsept Pasta<span class="menu-item-tag">Sipariş</span></div>
-            <div class="menu-item-desc">Doğum günü, nişan, özel tasarım — DM ile sipariş</div>
+            <div class="menu-item-desc">Doğum günü, nişan, özel tasarım — talep formu ile</div>
           </div>
-          <div class="menu-item-price">Fiyat sorunuz</div>
         </div>
 
         <!-- Tatlılar -->
@@ -2114,35 +2086,30 @@
             <div class="menu-item-name">Meyveli Kek</div>
             <div class="menu-item-desc">Mevsim meyveleriyle</div>
           </div>
-          <div class="menu-item-price">₺60</div>
         </div>
         <div class="menu-item reveal" data-category="tatli">
           <div class="menu-item-info">
             <div class="menu-item-name">Güveçte Fırın Sütlaç</div>
             <div class="menu-item-desc">Güveçte servis edilmektedir</div>
           </div>
-          <div class="menu-item-price">₺160</div>
         </div>
         <div class="menu-item reveal" data-category="tatli">
           <div class="menu-item-info">
             <div class="menu-item-name">Karamelli Trileçe</div>
             <div class="menu-item-desc">Özel sert kabında korunarak gelir</div>
           </div>
-          <div class="menu-item-price">₺160</div>
         </div>
         <div class="menu-item reveal" data-category="tatli">
           <div class="menu-item-info">
             <div class="menu-item-name">Çilekli Magnolya</div>
             <div class="menu-item-desc">Cam kavanozda kendi kapağıyla</div>
           </div>
-          <div class="menu-item-price">₺160</div>
         </div>
         <div class="menu-item reveal" data-category="tatli">
           <div class="menu-item-info">
             <div class="menu-item-name">Islak Kek</div>
             <div class="menu-item-desc">Özel sert kabında korunarak gelir</div>
           </div>
-          <div class="menu-item-price">₺160</div>
         </div>
 
         <!-- Ekler -->
@@ -2151,14 +2118,12 @@
             <div class="menu-item-name">Çikolatalı Ekler</div>
             <div class="menu-item-desc">500 gr. veya 1 kg.</div>
           </div>
-          <div class="menu-item-price">₺325 / ₺650</div>
         </div>
         <div class="menu-item reveal" data-category="ekler">
           <div class="menu-item-info">
             <div class="menu-item-name">Frambuazlı Ekler</div>
             <div class="menu-item-desc">500 gr. veya 1 kg.</div>
           </div>
-          <div class="menu-item-price">₺325 / ₺650</div>
         </div>
 
         <!-- Kuru Pasta -->
@@ -2167,35 +2132,30 @@
             <div class="menu-item-name">Tuzlu & Tatlı Kuru Pasta</div>
             <div class="menu-item-desc">500 gr. veya 1 kg. paket</div>
           </div>
-          <div class="menu-item-price">₺325 / ₺650</div>
         </div>
         <div class="menu-item reveal" data-category="kuru">
           <div class="menu-item-info">
             <div class="menu-item-name">Tatlı Kuru Pasta</div>
             <div class="menu-item-desc">500 gr. veya 1 kg. paket</div>
           </div>
-          <div class="menu-item-price">₺325 / ₺650</div>
         </div>
         <div class="menu-item reveal" data-category="kuru">
           <div class="menu-item-info">
             <div class="menu-item-name">Tuzlu Kuru Pasta</div>
             <div class="menu-item-desc">500 gr. veya 1 kg. paket</div>
           </div>
-          <div class="menu-item-price">₺325 / ₺650</div>
         </div>
         <div class="menu-item reveal" data-category="kuru">
           <div class="menu-item-info">
             <div class="menu-item-name">Susamlı Çubuk Galeta</div>
             <div class="menu-item-desc">500 gr. paketli ürün</div>
           </div>
-          <div class="menu-item-price">₺200</div>
         </div>
         <div class="menu-item reveal" data-category="kuru">
           <div class="menu-item-info">
             <div class="menu-item-name">Çekirdekli Yaprak Galeta</div>
             <div class="menu-item-desc">500 gr. paketli ürün</div>
           </div>
-          <div class="menu-item-price">₺240</div>
         </div>
 
         <!-- İçecekler -->
@@ -2204,58 +2164,50 @@
             <div class="menu-item-name">Çay</div>
             <div class="menu-item-desc">Demlik çay, bardak</div>
           </div>
-          <div class="menu-item-price">₺30</div>
         </div>
         <div class="menu-item reveal" data-category="icecek">
           <div class="menu-item-info">
             <div class="menu-item-name">Türk Kahvesi</div>
             <div class="menu-item-desc">Geleneksel pişirme</div>
           </div>
-          <div class="menu-item-price">₺50</div>
         </div>
         <div class="menu-item reveal" data-category="icecek">
           <div class="menu-item-info">
             <div class="menu-item-name">Nescafe</div>
           </div>
-          <div class="menu-item-price">₺50</div>
         </div>
         <div class="menu-item reveal" data-category="icecek">
           <div class="menu-item-info">
             <div class="menu-item-name">Sahlep</div>
             <div class="menu-item-desc">Tarçınlı, sıcak</div>
           </div>
-          <div class="menu-item-price">₺60</div>
         </div>
         <div class="menu-item reveal" data-category="icecek">
           <div class="menu-item-info">
             <div class="menu-item-name">Dimes Şeftali (200ml)</div>
           </div>
-          <div class="menu-item-price">₺25</div>
         </div>
         <div class="menu-item reveal" data-category="icecek">
           <div class="menu-item-info">
             <div class="menu-item-name">Dimes Kayısı (200ml)</div>
           </div>
-          <div class="menu-item-price">₺25</div>
         </div>
         <div class="menu-item reveal" data-category="icecek">
           <div class="menu-item-info">
             <div class="menu-item-name">Dimes Vişne (200ml)</div>
           </div>
-          <div class="menu-item-price">₺25</div>
         </div>
         <div class="menu-item reveal" data-category="icecek">
           <div class="menu-item-info">
             <div class="menu-item-name">Dimes Karışık (200ml)</div>
           </div>
-          <div class="menu-item-price">₺25</div>
         </div>
       </div>
 
       <div style="text-align:center; margin-top:56px;" class="reveal">
-        <a href="https://ig.me/m/ferhatpatisserie" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-          DM ile Sipariş Ver
+        <a href="#talep" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"/><path d="M2 21h20"/><path d="M7 8v3"/><path d="M12 8v3"/><path d="M17 8v3"/><path d="M7 4h.01"/><path d="M12 4h.01"/><path d="M17 4h.01"/></svg>
+          Özel Sipariş Talebi Gönder
         </a>
       </div>
     </div>
@@ -2272,99 +2224,99 @@
 
       <div class="gallery-masonry reveal">
         <div class="gallery-item" onclick="openLightbox(0)">
-          <img src="images-enhanced/kirmizi-gul.jpg" alt="Kırmızı Gül Pastası" loading="lazy">
+          <img src="images-enhanced/kirmizi-gul.jpg" alt="Kırmızı Gül Pastası" loading="lazy" width="500" height="670">
           <span class="gallery-item-label">Kırmızı Gül Pastası</span>
         </div>
         <div class="gallery-item" onclick="openLightbox(1)">
-          <img src="images-enhanced/lotus-pasta.jpg" alt="Lotus Pasta" loading="lazy">
+          <img src="images-enhanced/lotus-pasta.jpg" alt="Lotus Pasta" loading="lazy" width="465" height="618">
           <span class="gallery-item-label">Lotus Pasta</span>
         </div>
         <div class="gallery-item" onclick="openLightbox(2)">
-          <img src="images-enhanced/unicorn.jpg" alt="Unicorn Doğum Günü Pastası" loading="lazy">
+          <img src="images-enhanced/unicorn.jpg" alt="Unicorn Doğum Günü Pastası" loading="lazy" width="500" height="578">
           <span class="gallery-item-label">Unicorn Pasta</span>
         </div>
         <div class="gallery-item" onclick="openLightbox(3)">
-          <img src="images-enhanced/gold-macaron.jpg" alt="Gold Macaron Pastası" loading="lazy">
+          <img src="images-enhanced/gold-macaron.jpg" alt="Gold Macaron Pastası" loading="lazy" width="500" height="679">
           <span class="gallery-item-label">Gold Macaron</span>
         </div>
         <div class="gallery-item" onclick="openLightbox(4)">
-          <img src="images-enhanced/spoonful-cikolata.jpg" alt="Spoonful Çikolata Tatlıları" loading="lazy">
+          <img src="images-enhanced/spoonful-cikolata.jpg" alt="Spoonful Çikolata Tatlıları" loading="lazy" width="500" height="677">
           <span class="gallery-item-label">Çikolata Tatlıları</span>
         </div>
         <div class="gallery-item" onclick="openLightbox(5)">
-          <img src="images-enhanced/fiyonklu-pasta.jpg" alt="Fiyonklu Pasta" loading="lazy">
+          <img src="images-enhanced/fiyonklu-pasta.jpg" alt="Fiyonklu Pasta" loading="lazy" width="460" height="724">
           <span class="gallery-item-label">Fiyonklu Pasta</span>
         </div>
         <div class="gallery-item" onclick="openLightbox(6)">
-          <img src="images-enhanced/kanatli-happy-birthday.jpg" alt="Kanatlı Happy Birthday Pastası" loading="lazy">
+          <img src="images-enhanced/kanatli-happy-birthday.jpg" alt="Kanatlı Happy Birthday Pastası" loading="lazy" width="500" height="677">
           <span class="gallery-item-label">Happy Birthday</span>
         </div>
         <div class="gallery-item" onclick="openLightbox(7)">
-          <img src="images-enhanced/basketbol-pasta.jpg" alt="Basketbol Temalı Pasta" loading="lazy">
+          <img src="images-enhanced/basketbol-pasta.jpg" alt="Basketbol Temalı Pasta" loading="lazy" width="500" height="668">
           <span class="gallery-item-label">Basketbol Pasta</span>
         </div>
         <div class="gallery-item" onclick="openLightbox(8)">
-          <img src="images-enhanced/yilbasi-vitrin.jpg" alt="Yılbaşı Konsept Pasta Vitrini" loading="lazy">
+          <img src="images-enhanced/yilbasi-vitrin.jpg" alt="Yılbaşı Konsept Pasta Vitrini" loading="lazy" width="500" height="659">
           <span class="gallery-item-label">Yılbaşı Vitrini</span>
         </div>
         <div class="gallery-item" onclick="openLightbox(9)">
-          <img src="images-enhanced/paw-patrol.jpg" alt="Paw Patrol Pasta" loading="lazy">
+          <img src="images-enhanced/paw-patrol.jpg" alt="Paw Patrol Pasta" loading="lazy" width="500" height="633">
           <span class="gallery-item-label">Paw Patrol</span>
         </div>
         <div class="gallery-item" onclick="openLightbox(10)">
-          <img src="images-enhanced/tavsan-pasta.jpg" alt="Tavşan Doğum Günü Pastası" loading="lazy">
+          <img src="images-enhanced/tavsan-pasta.jpg" alt="Tavşan Doğum Günü Pastası" loading="lazy" width="500" height="584">
           <span class="gallery-item-label">Tavşan Pasta</span>
         </div>
         <div class="gallery-item" onclick="openLightbox(11)">
-          <img src="images-enhanced/sut-burger.jpg" alt="Süt Burger Serisi" loading="lazy">
+          <img src="images-enhanced/sut-burger.jpg" alt="Süt Burger Serisi" loading="lazy" width="500" height="676">
           <span class="gallery-item-label">Süt Burger</span>
         </div>
         <div class="gallery-item" onclick="openLightbox(12)">
-          <img src="images-enhanced/yilbasi-geyik.jpg" alt="Yılbaşı Geyik Pastası" loading="lazy">
+          <img src="images-enhanced/yilbasi-geyik.jpg" alt="Yılbaşı Geyik Pastası" loading="lazy" width="500" height="738">
           <span class="gallery-item-label">Yılbaşı Geyik</span>
         </div>
         <div class="gallery-item" onclick="openLightbox(13)">
-          <img src="images-enhanced/yilbasi-kardan-adam.jpg" alt="Yılbaşı Kardan Adam Pastası" loading="lazy">
+          <img src="images-enhanced/yilbasi-kardan-adam.jpg" alt="Yılbaşı Kardan Adam Pastası" loading="lazy" width="500" height="710">
           <span class="gallery-item-label">Kardan Adam</span>
         </div>
         <div class="gallery-item" onclick="openLightbox(14)">
-          <img src="images-enhanced/kanatli-closeup.jpg" alt="Kanatlı Pasta Detay" loading="lazy">
+          <img src="images-enhanced/kanatli-closeup.jpg" alt="Kanatlı Pasta Detay" loading="lazy" width="500" height="759">
           <span class="gallery-item-label">Kanatlı Pasta</span>
         </div>
         <div class="gallery-item" onclick="openLightbox(15)">
-          <img src="images-enhanced/yilbasi-noel-kapi.jpg" alt="Yılbaşı Noel Kapısı Pastası" loading="lazy">
+          <img src="images-enhanced/yilbasi-noel-kapi.jpg" alt="Yılbaşı Noel Kapısı Pastası" loading="lazy" width="500" height="769">
           <span class="gallery-item-label">Noel Kapısı</span>
         </div>
         <div class="gallery-item" onclick="openLightbox(16)">
-          <img src="images-enhanced/unicorn-closeup.jpg" alt="Unicorn Pasta Detay" loading="lazy">
+          <img src="images-enhanced/unicorn-closeup.jpg" alt="Unicorn Pasta Detay" loading="lazy" width="500" height="641">
           <span class="gallery-item-label">Unicorn Detay</span>
         </div>
         <div class="gallery-item" onclick="openLightbox(17)">
-          <img src="images-enhanced/yilbasi-ayi.jpg" alt="Yılbaşı Ayı Pastası" loading="lazy">
+          <img src="images-enhanced/yilbasi-ayi.jpg" alt="Yılbaşı Ayı Pastası" loading="lazy" width="500" height="699">
           <span class="gallery-item-label">Yılbaşı Ayı</span>
         </div>
         <div class="gallery-item" onclick="openLightbox(18)">
-          <img src="images-enhanced/teddy-basketbol.jpg" alt="Teddy Basketbol Pastası" loading="lazy">
+          <img src="images-enhanced/teddy-basketbol.jpg" alt="Teddy Basketbol Pastası" loading="lazy" width="423" height="822">
           <span class="gallery-item-label">Teddy Basketbol</span>
         </div>
         <div class="gallery-item" onclick="openLightbox(19)">
-          <img src="images-enhanced/yilbasi-kar.jpg" alt="Yılbaşı Kar Pastası" loading="lazy">
+          <img src="images-enhanced/yilbasi-kar.jpg" alt="Yılbaşı Kar Pastası" loading="lazy" width="500" height="709">
           <span class="gallery-item-label">Yılbaşı Kar</span>
         </div>
         <div class="gallery-item" onclick="openLightbox(20)">
-          <img src="images-enhanced/yilbasi-snowman.jpg" alt="Yılbaşı Snowman Pastası" loading="lazy">
+          <img src="images-enhanced/yilbasi-snowman.jpg" alt="Yılbaşı Snowman Pastası" loading="lazy" width="500" height="701">
           <span class="gallery-item-label">Snowman Pasta</span>
         </div>
         <div class="gallery-item" onclick="openLightbox(21)">
-          <img src="images-enhanced/yilbasi-figurler.jpg" alt="Yılbaşı Figürlü Pasta" loading="lazy">
+          <img src="images-enhanced/yilbasi-figurler.jpg" alt="Yılbaşı Figürlü Pasta" loading="lazy" width="431" height="837">
           <span class="gallery-item-label">Yılbaşı Figürleri</span>
         </div>
       </div>
 
       <div class="gallery-cta reveal">
-        <a href="https://www.instagram.com/ferhatpatisserie/" target="_blank" rel="noopener noreferrer">
-          Daha fazlası için @ferhatpatisserie
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <a href="https://www.instagram.com/ferhatpatisserie/" target="_blank" rel="noopener noreferrer" aria-label="Instagram'da daha fazlası">
+          Daha fazlası için
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
         </a>
       </div>
     </div>
@@ -2388,7 +2340,7 @@
       </div>
       <div class="about-grid">
         <div class="about-image reveal clip-reveal">
-          <img src="https://img02.restaurantguru.com/c098-Desserts-Ferhat-Patiserie-exterior.jpg" alt="Ferhat Patisserie Dış Görünüm" loading="lazy">
+          <img src="images/about-dis-gorunum.jpg" alt="Ferhat Patisserie Dış Görünüm" loading="lazy" width="617" height="645">
           <div class="about-image-badge">
             <div class="number">228</div>
             <div class="label">Google Yorumu</div>
@@ -2493,13 +2445,207 @@
     </div>
   </section>
 
+  <!-- ═══ REQUEST FORM ═══ -->
+  <section class="request" id="talep">
+    <div class="container">
+      <div class="reveal">
+        <div class="section-eyebrow">Özel Sipariş</div>
+        <h2 class="section-title">Sipariş Talebi</h2>
+        <p class="section-subtitle">Ne istediğinizi yazın, varsa örnek fotoğrafı ekleyin. Sizi arayıp fiyatı ve detayları birlikte netleştirelim.</p>
+      </div>
+
+      <div class="request-grid">
+        <div class="request-steps reveal">
+          <div class="request-step">
+            <div class="request-step-num">1</div>
+            <div>
+              <div class="request-step-title">Formu gönderin</div>
+              <div class="request-step-desc">Bir dakikanızı alır. Beğendiğiniz bir modelin fotoğrafını eklerseniz işimiz kolaylaşır.</div>
+            </div>
+          </div>
+          <div class="request-step">
+            <div class="request-step-num">2</div>
+            <div>
+              <div class="request-step-title">Sizi arayalım</div>
+              <div class="request-step-desc">Talebiniz ustamıza ulaşır; en kısa sürede sizi arar, fiyatı ve detayları konuşuruz.</div>
+            </div>
+          </div>
+          <div class="request-step">
+            <div class="request-step-num">3</div>
+            <div>
+              <div class="request-step-title">Onaylayın, hazırlayalım</div>
+              <div class="request-step-desc">Telefonda anlaştıktan sonra siparişiniz gününde taze hazırlanır.</div>
+            </div>
+          </div>
+          <div class="request-note">
+            <strong>Fiyat ve teslim onayı telefonda verilir.</strong> Form bir sipariş değil, talep oluşturur; sizi aramadan hiçbir şey kesinleşmez.
+          </div>
+        </div>
+
+        <div class="request-card reveal reveal-delay-1">
+          <form class="request-form" id="talepForm" action="/api/talep" method="post" enctype="multipart/form-data" novalidate>
+            <div class="field field--half">
+              <label for="f-ad">Ad Soyad<span class="req">*</span></label>
+              <input id="f-ad" name="ad_soyad" type="text" autocomplete="name" required maxlength="80" data-required-msg="Adınızı ve soyadınızı yazın.">
+              <div class="field-error"></div>
+            </div>
+            <div class="field field--half">
+              <label for="f-tel">Telefon<span class="req">*</span></label>
+              <input id="f-tel" name="telefon" type="tel" inputmode="tel" autocomplete="tel" placeholder="0540 314 33 33" required data-required-msg="Sizi arayabilmemiz için telefonunuzu yazın.">
+              <div class="field-error"></div>
+            </div>
+            <div class="field field--half">
+              <label for="f-eposta">E-posta<span class="opt">isteğe bağlı</span></label>
+              <input id="f-eposta" name="eposta" type="email" inputmode="email" autocomplete="email" maxlength="120">
+              <div class="field-hint">Yazarsanız talep onayınızı e-postayla da gönderiyoruz; yazmazsanız yalnızca telefonla ararız.</div>
+              <div class="field-error"></div>
+            </div>
+            <div class="field field--half">
+              <label for="f-tur">Sipariş türü<span class="req">*</span></label>
+              <select id="f-tur" name="tur" required data-required-msg="Ne tür bir sipariş istediğinizi seçin.">
+                <option value="">Seçin…</option>
+                <option value="ozel-pasta">Özel pasta</option>
+                <option value="kuru-pasta">Kuru pasta &amp; kurabiye</option>
+                <option value="borek-pogaca">Börek &amp; poğaça (toplu)</option>
+                <option value="catering">Catering / kurumsal</option>
+                <option value="diger">Diğer</option>
+              </select>
+              <div class="field-error"></div>
+            </div>
+            <div class="field field--half">
+              <label for="f-tarih">Teslim tarihi<span class="req">*</span></label>
+              <input id="f-tarih" name="teslim_tarihi" type="date" required data-required-msg="Teslim tarihini seçin.">
+              <div class="field-error"></div>
+            </div>
+
+            <div class="field field--full" data-types="diger" data-required-for="diger" hidden>
+              <label for="f-diger">Ne istiyorsunuz?<span class="req">*</span><span class="opt" hidden>isteğe bağlı</span></label>
+              <input id="f-diger" name="diger_aciklama" type="text" maxlength="120" placeholder="örn. 30 kişilik brunch tabağı, glütensiz kek, bayram tepsisi…" data-required-msg="Ne istediğinizi kısaca yazın.">
+              <div class="field-error"></div>
+            </div>
+            <div class="field field--half" data-types="ozel-pasta,catering" data-required-for="ozel-pasta,catering" hidden>
+              <label for="f-kisi">Kişi sayısı<span class="req">*</span><span class="opt" hidden>isteğe bağlı</span></label>
+              <input id="f-kisi" name="kisi_sayisi" type="number" inputmode="numeric" min="1" max="5000" placeholder="örn. 12" data-required-msg="Kaç kişilik olduğunu yazın.">
+              <div class="field-error"></div>
+            </div>
+            <div class="field field--half" data-types="kuru-pasta" data-required-for="kuru-pasta" hidden>
+              <label for="f-miktar">Miktar<span class="req">*</span><span class="opt" hidden>isteğe bağlı</span></label>
+              <input id="f-miktar" name="miktar" type="text" maxlength="80" placeholder="örn. 2 kg karışık, 1 kutu tuzlu" data-required-msg="Ne kadar istediğinizi yazın.">
+              <div class="field-error"></div>
+            </div>
+            <div class="field field--half" data-types="borek-pogaca" data-required-for="borek-pogaca" hidden>
+              <label for="f-adet">Adet<span class="req">*</span><span class="opt" hidden>isteğe bağlı</span></label>
+              <input id="f-adet" name="adet" type="number" inputmode="numeric" min="1" max="5000" placeholder="örn. 50" data-required-msg="Kaç adet istediğinizi yazın.">
+              <div class="field-error"></div>
+            </div>
+            <div class="field field--half" data-types="borek-pogaca" data-required-for="borek-pogaca" hidden>
+              <label for="f-saat">Teslim saati<span class="req">*</span><span class="opt" hidden>isteğe bağlı</span></label>
+              <input id="f-saat" name="teslim_saati" type="time" data-required-msg="Teslim saatini seçin.">
+              <div class="field-error"></div>
+            </div>
+            <div class="field field--half" data-types="ozel-pasta,catering" data-required-for="catering" hidden>
+              <label for="f-etkinlik">Etkinlik<span class="req">*</span><span class="opt" hidden>isteğe bağlı</span></label>
+              <select id="f-etkinlik" name="etkinlik" data-required-msg="Etkinlik türünü seçin.">
+                <option value="">Seçin…</option>
+                <option value="dogum-gunu">Doğum günü</option>
+                <option value="nisan">Nişan</option>
+                <option value="dugun">Düğün</option>
+                <option value="baby-shower">Baby shower</option>
+                <option value="kurumsal">Kurumsal</option>
+                <option value="diger">Diğer</option>
+              </select>
+              <div class="field-error"></div>
+            </div>
+            <div class="field field--half" data-types="ozel-pasta" hidden>
+              <label for="f-yazi">Pasta üstü yazı<span class="req" hidden>*</span><span class="opt">isteğe bağlı</span></label>
+              <input id="f-yazi" name="pasta_yazisi" type="text" maxlength="120" placeholder="örn. İyi ki doğdun Elif">
+              <div class="field-error"></div>
+            </div>
+            <div class="field field--half" data-types="catering" data-required-for="catering" hidden>
+              <label for="f-teslim">Teslim şekli<span class="req">*</span><span class="opt" hidden>isteğe bağlı</span></label>
+              <select id="f-teslim" name="teslim_sekli" data-required-msg="Teslim şeklini seçin.">
+                <option value="">Seçin…</option>
+                <option value="dukkandan">Dükkândan teslim alacağım</option>
+                <option value="adrese-teslim">Adrese teslim (uygunsa)</option>
+              </select>
+              <div class="field-error"></div>
+            </div>
+            <div class="field field--full" data-types="catering" hidden>
+              <div class="field" data-address hidden>
+                <label for="f-adres">Teslimat adresi<span class="req">*</span></label>
+                <textarea id="f-adres" name="adres" rows="2" maxlength="300" data-required-msg="Teslimat adresini yazın."></textarea>
+                <div class="field-error"></div>
+              </div>
+            </div>
+
+            <div class="field field--full">
+              <label>Örnek fotoğraf<span class="opt">isteğe bağlı · en fazla 3</span></label>
+              <div class="upload" tabindex="0" role="button" aria-label="Fotoğraf ekle">
+                <input id="f-foto" name="fotograf" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif" multiple>
+                <div class="upload-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6H8l1.2-1.8A1 1 0 0 1 10 3.8h4a1 1 0 0 1 .8.4L16 6h1.5A2.5 2.5 0 0 1 20 8.5v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5z"/><circle cx="12" cy="12.5" r="3.2"/></svg></div>
+                <div class="upload-text"><u>Fotoğraf seçin</u> ya da buraya sürükleyin</div>
+                <div class="upload-sub">JPG, PNG, WEBP, HEIC · her biri en fazla 10 MB · fotoğraflar olduğu gibi, sıkıştırılmadan ustamıza ulaşır</div>
+              </div>
+              <div class="upload-previews" aria-live="polite"></div>
+              <div class="field-error"></div>
+            </div>
+
+            <div class="field field--full">
+              <label for="f-not">Notlar<span class="req" hidden>*</span><span class="opt">isteğe bağlı</span></label>
+              <textarea id="f-not" name="notlar" rows="4" maxlength="1500" placeholder="Tema, lezzet, renk, alerji, bütçe aralığı… aklınızdaki her şey."></textarea>
+              <div class="field-error"></div>
+            </div>
+
+            <div class="field field--full">
+              <label class="consent">
+                <input type="checkbox" name="kvkk" value="1" required data-required-msg="Devam etmek için aydınlatma metnini onaylayın.">
+                <span>Kişisel verilerimin talebimle ilgili aranmam ve bilgilendirilmem amacıyla işlenmesini kabul ediyorum. <a href="#kvkk" data-open-kvkk>Aydınlatma metni</a></span>
+              </label>
+              <div class="field-error"></div>
+            </div>
+
+            <div class="hp" aria-hidden="true">
+              <label>Web sitesi<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+            </div>
+
+            <div class="form-alert form-alert--error" role="alert"></div>
+
+            <div class="request-actions">
+              <button type="submit" class="btn btn-primary">Talebi Gönder</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <dialog class="kvkk-dialog" id="kvkkDialog" aria-labelledby="kvkkTitle">
+    <div class="kvkk-body">
+      <h3 id="kvkkTitle">Kişisel Verilerin Korunması — Aydınlatma Metni</h3>
+      <p>Bu metin, 6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında, sipariş talep formu aracılığıyla paylaştığınız kişisel verilerin nasıl işlendiğini açıklar.</p>
+      <h4>Veri sorumlusu</h4>
+      <p>Ferhat Patisserie — Nusratiye Mah, Kuvayi Milliye Cad No:126/E, 33080 Akdeniz / Mersin · 0540 314 33 33</p>
+      <h4>Hangi veriler, hangi amaçla</h4>
+      <ul>
+        <li><strong>Ad soyad, telefon, e-posta:</strong> talebinizle ilgili sizi aramak, fiyat ve teslim bilgisi vermek.</li>
+        <li><strong>Sipariş bilgileri ve fotoğraf:</strong> istediğiniz ürünü doğru hazırlamak.</li>
+        <li><strong>Teknik bilgiler (kısaltılmış IP, şehir, cihaz türü, zaman):</strong> formun güvenliğini sağlamak ve kötüye kullanımı önlemek.</li>
+      </ul>
+      <h4>Saklama ve paylaşım</h4>
+      <p>Verileriniz, talebinizin sonuçlanmasından itibaren en fazla 24 ay saklanır ve sonra silinir. Verileriniz yalnızca talebinizin yönetilmesi için kullanılan altyapı sağlayıcılarıyla (bulut depolama, kayıt yönetimi ve e-posta hizmeti) paylaşılır; reklam amacıyla üçüncü kişilere aktarılmaz.</p>
+      <h4>Haklarınız</h4>
+      <p>Kanunun 11. maddesi kapsamında verilerinize erişme, düzeltilmesini veya silinmesini isteme hakkınız vardır. Talebinizi yukarıdaki telefon numarasından ya da dükkânımızdan iletebilirsiniz.</p>
+      <div class="kvkk-close"><button type="button" class="btn btn-primary" data-close-kvkk>Kapat</button></div>
+    </div>
+  </dialog>
+
   <!-- ═══ PLATFORMS ═══ -->
   <section class="platforms" id="platformlar">
     <div class="container">
       <div class="platforms-header reveal">
         <div class="section-eyebrow">Online Sipariş</div>
         <h2 class="section-title">Bizi Buralarda da<br>Bulabilirsiniz</h2>
-        <p class="section-subtitle">Evinizden çıkmadan Ferhat lezzetlerini kapınıza getirin.</p>
+        <p class="section-subtitle">Günlük ürünler için Getir, özel siparişler için talep formu.</p>
       </div>
 
       <div class="platforms-grid">
@@ -2514,35 +2660,13 @@
           <span class="platform-arrow">&rarr;</span>
         </a>
 
-        <a href="https://www.yemeksepeti.com/restaurant/locs/ferhat-patisserie" class="platform-card reveal reveal-delay-1" target="_blank" rel="noopener noreferrer">
-          <div class="platform-icon platform-icon--yemeksepeti" style="background: none; padding: 0; overflow: hidden;">
-            <img src="images-enhanced/yemeksepeti-icon.png" alt="Yemeksepeti" width="44" height="44" style="border-radius: 12px; display: block;">
-          </div>
-          <div>
-            <div class="platform-name">Yemeksepeti</div>
-            <div class="platform-desc">Online menü ve sipariş</div>
-          </div>
-          <span class="platform-arrow">&rarr;</span>
-        </a>
-
-        <a href="https://www.instagram.com/ferhatpatisserie/" class="platform-card reveal reveal-delay-2" target="_blank" rel="noopener noreferrer">
+        <a href="https://www.instagram.com/ferhatpatisserie/" class="platform-card reveal reveal-delay-1" target="_blank" rel="noopener noreferrer">
           <div class="platform-icon platform-icon--instagram">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
           </div>
           <div>
             <div class="platform-name">Instagram</div>
-            <div class="platform-desc">@ferhatpatisserie · 1.019 takipçi</div>
-          </div>
-          <span class="platform-arrow">&rarr;</span>
-        </a>
-
-        <a href="https://www.facebook.com/people/Ferhat-Patisserie/100067459909816/" class="platform-card reveal reveal-delay-3" target="_blank" rel="noopener noreferrer">
-          <div class="platform-icon platform-icon--facebook">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-          </div>
-          <div>
-            <div class="platform-name">Facebook</div>
-            <div class="platform-desc">Sayfamızı takip edin</div>
+            <div class="platform-desc">Vitrinimiz ve yeni ürünler</div>
           </div>
           <span class="platform-arrow">&rarr;</span>
         </a>
@@ -2561,7 +2685,7 @@
       <div class="contact-grid">
         <div class="contact-info-list reveal">
           <div class="contact-item">
-            <div class="contact-item-icon">📍</div>
+            <div class="contact-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg></div>
             <div>
               <div class="contact-item-label">Adres</div>
               <div class="contact-item-value">Nusratiye Mah, Kuvayi Milliye Cad No:126/E<br>33080 Akdeniz / Mersin</div>
@@ -2569,7 +2693,7 @@
           </div>
 
           <div class="contact-item">
-            <div class="contact-item-icon">📞</div>
+            <div class="contact-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 3.5h3l1.6 4-2 1.3a11 11 0 0 0 6.1 6.1l1.3-2 4 1.6v3a2 2 0 0 1-2.2 2A15.5 15.5 0 0 1 3.5 5.7a2 2 0 0 1 2-2.2z"/></svg></div>
             <div>
               <div class="contact-item-label">Telefon</div>
               <div class="contact-item-value">
@@ -2580,35 +2704,17 @@
           </div>
 
           <div class="contact-item">
-            <div class="contact-item-icon">🕐</div>
+            <div class="contact-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></div>
             <div>
               <div class="contact-item-label">Çalışma Saatleri</div>
               <div class="contact-item-value" style="color: var(--gold); font-weight: 600;">24 Saat Açık — Her Gün</div>
             </div>
           </div>
 
-          <div class="contact-item">
-            <div class="contact-item-icon">💳</div>
-            <div>
-              <div class="contact-item-label">Ödeme</div>
-              <div class="contact-item-value">Nakit & Kredi Kartı</div>
-            </div>
-          </div>
-
-          <div class="contact-item">
-            <div class="contact-item-icon">📶</div>
-            <div>
-              <div class="contact-item-label">Diğer</div>
-              <div class="contact-item-value">Ücretsiz Wi-Fi · TV</div>
-            </div>
-          </div>
 
           <div class="contact-social">
             <a href="https://www.instagram.com/ferhatpatisserie/" target="_blank" rel="noopener noreferrer" title="Instagram">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-            </a>
-            <a href="https://www.facebook.com/people/Ferhat-Patisserie/100067459909816/" target="_blank" rel="noopener noreferrer" title="Facebook">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
             </a>
           </div>
         </div>
@@ -2635,9 +2741,6 @@
           <div class="footer-social">
             <a href="https://www.instagram.com/ferhatpatisserie/" target="_blank" rel="noopener noreferrer" title="Instagram">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-            </a>
-            <a href="https://www.facebook.com/people/Ferhat-Patisserie/100067459909816/" target="_blank" rel="noopener noreferrer" title="Facebook">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
             </a>
           </div>
         </div>
@@ -2677,10 +2780,10 @@
     </div>
   </footer>
 
-  <!-- ═══ INSTAGRAM DM FLOAT ═══ -->
-  <a href="https://ig.me/m/ferhatpatisserie" class="instagram-float" target="_blank" rel="noopener noreferrer" title="Instagram DM ile sipariş verin">
-    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-    <span class="whatsapp-tooltip">DM ile sipariş!</span>
+  <!-- ═══ REQUEST FLOAT ═══ -->
+  <a href="#talep" class="request-float" title="Özel sipariş talebi gönderin" aria-label="Özel sipariş talebi">
+    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"/><path d="M2 21h20"/><path d="M7 8v3"/><path d="M12 8v3"/><path d="M17 8v3"/><path d="M7 4h.01"/><path d="M12 4h.01"/><path d="M17 4h.01"/></svg>
+    <span class="whatsapp-tooltip">Özel sipariş talebi</span>
   </a>
 
   <!-- ═══ WHATSAPP FLOAT ═══ -->
@@ -2697,6 +2800,15 @@
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
+
+    // ── Floating buttons wait until the hero has scrolled away (phones) ──
+    const heroEl = document.querySelector('.hero');
+    if (heroEl && 'IntersectionObserver' in window) {
+      document.body.classList.add('in-hero');
+      new IntersectionObserver(([e]) => {
+        document.body.classList.toggle('in-hero', e.isIntersecting && e.intersectionRatio > 0.3);
+      }, { threshold: [0, 0.3, 0.6] }).observe(heroEl);
+    }
 
     // ── Mobile menu ──
     function toggleMenu() {
@@ -2966,6 +3078,9 @@
     }, { threshold: 0.3, rootMargin: '-100px 0px -50% 0px' });
     sections.forEach(s => sectionObserver.observe(s));
   </script>
+  <script src="assets/form.js" defer></script>
+  <script src="assets/pickers.js" defer></script>
+  <script src="assets/chat.js" defer></script>
 
 </body>
 </html>
