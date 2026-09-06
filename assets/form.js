@@ -38,7 +38,9 @@
     const p = n => String(n).padStart(2, '0');
     return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
   }
-  const today = new Date();
+  // "Today" is the shop's day (Europe/Istanbul), not the visitor's — the Worker validates in that zone too.
+  const istanbulToday = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Istanbul', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+  const today = new Date(istanbulToday + 'T00:00:00');
   const minDate = new Date(today); minDate.setDate(today.getDate() + 1);
   const maxDate = new Date(today); maxDate.setDate(today.getDate() + 180);
   dateInput.min = isoLocal(minDate);
