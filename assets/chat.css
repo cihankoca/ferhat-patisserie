@@ -57,12 +57,8 @@
 .chat-head .chat-launch-avatar::after { border-color: var(--noir-warm); }
 .chat-head-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; line-height: 1.1; }
 .chat-head-sub { font-size: 0.68rem; color: rgba(250, 246, 240, 0.6); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 2px; }
-.chat-preview-tag {
-  margin-left: auto; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
-  padding: 4px 8px; border-radius: 4px;
-  border: 1px solid rgba(201, 169, 110, 0.5); color: var(--gold);
-}
 .chat-close {
+  margin-left: auto;
   background: none; border: none; color: rgba(250, 246, 240, 0.7);
   font-size: 22px; line-height: 1; cursor: pointer; padding: 4px 2px 4px 8px;
 }

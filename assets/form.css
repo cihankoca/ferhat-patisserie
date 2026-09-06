@@ -63,6 +63,7 @@
 
 .field { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 .field--full { grid-column: 1 / -1; }
+.field--contact { margin-top: 10px; }
 .field[hidden] { display: none; }
 
 .field label {
@@ -127,7 +128,8 @@
 }
 .upload:hover, .upload.is-drag { border-color: var(--gold); background: rgba(201, 169, 110, 0.08); }
 .upload input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
-.upload-icon { font-size: 1.6rem; margin-bottom: 6px; }
+.upload-icon { color: var(--gold); margin-bottom: 8px; }
+.upload-icon svg { width: 30px; height: 30px; }
 .upload-text { font-size: 0.9rem; color: var(--noir-warm); }
 .upload-text u { color: var(--gold); text-decoration: none; font-weight: 500; }
 .upload-sub { font-size: 0.74rem; color: rgba(90, 74, 62, 0.7); margin-top: 4px; font-weight: 300; }
@@ -166,7 +168,6 @@
 .request-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 22px; margin-top: 6px; }
 .request-actions .btn { border: none; }
 .request-actions .btn[disabled] { opacity: 0.6; cursor: wait; transform: none; box-shadow: none; }
-.request-actions-hint { font-size: 0.78rem; color: rgba(90, 74, 62, 0.75); font-weight: 300; }
 
 .spinner {
   width: 16px; height: 16px; border-radius: 50%;

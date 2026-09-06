@@ -74,7 +74,6 @@
     '<div class="chat-head">' +
       '<span class="chat-launch-avatar">F</span>' +
       '<div><div class="chat-head-title">Ferhat Asistan</div><div class="chat-head-sub">Hemen cevap verir</div></div>' +
-      '<span class="chat-preview-tag">Önizleme</span>' +
       '<button type="button" class="chat-close" aria-label="Kapat">×</button>' +
     '</div>' +
     '<div class="chat-body" aria-live="polite"></div>' +

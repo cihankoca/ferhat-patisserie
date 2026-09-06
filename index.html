@@ -1420,14 +1420,17 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.2rem;
+      color: var(--gold);
       flex-shrink: 0;
-      transition: all 0.3s;
+      transition: border-color 0.3s, background 0.3s, color 0.3s;
     }
+
+    .contact-item-icon svg { width: 22px; height: 22px; }
 
     .contact-item:hover .contact-item-icon {
       border-color: var(--gold);
       background: rgba(201, 169, 110, 0.06);
+      color: var(--noir-warm);
     }
 
     .contact-item-label {
@@ -2411,41 +2414,6 @@
     </div>
   </section>
 
-  <!-- ═══ PLATFORMS ═══ -->
-  <section class="platforms" id="platformlar">
-    <div class="container">
-      <div class="platforms-header reveal">
-        <div class="section-eyebrow">Online Sipariş</div>
-        <h2 class="section-title">Bizi Buralarda da<br>Bulabilirsiniz</h2>
-        <p class="section-subtitle">Günlük ürünler için Getir, özel siparişler için talep formu.</p>
-      </div>
-
-      <div class="platforms-grid">
-        <a href="https://getir.com/yemek/restoran/ferhat-patisseria-akdeniz-nusratiye-mah-akdeniz-mersin/" class="platform-card reveal" target="_blank" rel="noopener noreferrer">
-          <div class="platform-icon platform-icon--getir" style="background: none; padding: 0; overflow: hidden;">
-            <img src="images-enhanced/getir-icon.png" alt="Getir" width="44" height="44" style="border-radius: 12px; display: block;">
-          </div>
-          <div>
-            <div class="platform-name">GetirYemek</div>
-            <div class="platform-desc">Hızlı teslimat ile sipariş</div>
-          </div>
-          <span class="platform-arrow">&rarr;</span>
-        </a>
-
-        <a href="https://www.instagram.com/ferhatpatisserie/" class="platform-card reveal reveal-delay-1" target="_blank" rel="noopener noreferrer">
-          <div class="platform-icon platform-icon--instagram">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-          </div>
-          <div>
-            <div class="platform-name">Instagram</div>
-            <div class="platform-desc">Vitrinimiz ve yeni ürünler</div>
-          </div>
-          <span class="platform-arrow">&rarr;</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
   <!-- ═══ REQUEST FORM ═══ -->
   <section class="request" id="talep">
     <div class="container">
@@ -2486,22 +2454,6 @@
         <div class="request-card reveal reveal-delay-1">
           <form class="request-form" id="talepForm" action="/api/talep" method="post" enctype="multipart/form-data" novalidate>
             <div class="field field--half">
-              <label for="f-ad">Ad Soyad<span class="req">*</span></label>
-              <input id="f-ad" name="ad_soyad" type="text" autocomplete="name" required maxlength="80" data-required-msg="Adınızı ve soyadınızı yazın.">
-              <div class="field-error"></div>
-            </div>
-            <div class="field field--half">
-              <label for="f-tel">Telefon<span class="req">*</span></label>
-              <input id="f-tel" name="telefon" type="tel" inputmode="tel" autocomplete="tel" placeholder="0540 314 33 33" required data-required-msg="Sizi arayabilmemiz için telefonunuzu yazın.">
-              <div class="field-error"></div>
-            </div>
-            <div class="field field--half">
-              <label for="f-eposta">E-posta<span class="opt">isteğe bağlı</span></label>
-              <input id="f-eposta" name="eposta" type="email" inputmode="email" autocomplete="email" maxlength="120">
-              <div class="field-hint">Yazarsanız talebinizin onayını e-postayla da gönderiyoruz.</div>
-              <div class="field-error"></div>
-            </div>
-            <div class="field field--half">
               <label for="f-tur">Sipariş türü<span class="req">*</span></label>
               <select id="f-tur" name="tur" required data-required-msg="Ne tür bir sipariş istediğinizi seçin.">
                 <option value="">Seçin…</option>
@@ -2511,6 +2463,7 @@
                 <option value="catering">Catering / kurumsal</option>
                 <option value="diger">Diğer</option>
               </select>
+              <div class="field-hint">Örn. doğum günü pastası, 2 kg kurabiye, 100 adet poğaça, ofis ikramı.</div>
               <div class="field-error"></div>
             </div>
             <div class="field field--half">
@@ -2575,16 +2528,10 @@
             </div>
 
             <div class="field field--full">
-              <label for="f-not">Notlar<span class="req" hidden>*</span><span class="opt">isteğe bağlı</span></label>
-              <textarea id="f-not" name="notlar" rows="4" maxlength="1500" placeholder="Tema, lezzet, renk, alerji, bütçe aralığı… aklınızdaki her şey."></textarea>
-              <div class="field-error"></div>
-            </div>
-
-            <div class="field field--full">
               <label>Örnek fotoğraf<span class="opt">isteğe bağlı · en fazla 3</span></label>
               <div class="upload" tabindex="0" role="button" aria-label="Fotoğraf ekle">
                 <input id="f-foto" name="fotograf" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif" multiple>
-                <div class="upload-icon">📷</div>
+                <div class="upload-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6H8l1.2-1.8A1 1 0 0 1 10 3.8h4a1 1 0 0 1 .8.4L16 6h1.5A2.5 2.5 0 0 1 20 8.5v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5z"/><circle cx="12" cy="12.5" r="3.2"/></svg></div>
                 <div class="upload-text"><u>Fotoğraf seçin</u> ya da buraya sürükleyin</div>
                 <div class="upload-sub">JPG, PNG, WEBP, HEIC · her biri en fazla 10 MB · fotoğraflar olduğu gibi, sıkıştırılmadan ustamıza ulaşır</div>
               </div>
@@ -2592,6 +2539,28 @@
               <div class="field-error"></div>
             </div>
 
+            <div class="field field--full">
+              <label for="f-not">Notlar<span class="req" hidden>*</span><span class="opt">isteğe bağlı</span></label>
+              <textarea id="f-not" name="notlar" rows="4" maxlength="1500" placeholder="Tema, lezzet, renk, alerji, bütçe aralığı… aklınızdaki her şey."></textarea>
+              <div class="field-error"></div>
+            </div>
+
+            <div class="field field--half field--contact">
+              <label for="f-ad">Ad Soyad<span class="req">*</span></label>
+              <input id="f-ad" name="ad_soyad" type="text" autocomplete="name" required maxlength="80" data-required-msg="Adınızı ve soyadınızı yazın.">
+              <div class="field-error"></div>
+            </div>
+            <div class="field field--half">
+              <label for="f-tel">Telefon<span class="req">*</span></label>
+              <input id="f-tel" name="telefon" type="tel" inputmode="tel" autocomplete="tel" placeholder="0540 314 33 33" required data-required-msg="Sizi arayabilmemiz için telefonunuzu yazın.">
+              <div class="field-error"></div>
+            </div>
+            <div class="field field--full">
+              <label for="f-eposta">E-posta<span class="opt">isteğe bağlı</span></label>
+              <input id="f-eposta" name="eposta" type="email" inputmode="email" autocomplete="email" maxlength="120">
+              <div class="field-hint">Yazarsanız talebinizin onayını e-postayla da gönderiyoruz.</div>
+              <div class="field-error"></div>
+            </div>
             <div class="field field--full">
               <label class="consent">
                 <input type="checkbox" name="kvkk" value="1" required data-required-msg="Devam etmek için aydınlatma metnini onaylayın.">
@@ -2608,7 +2577,6 @@
 
             <div class="request-actions">
               <button type="submit" class="btn btn-primary">Talebi Gönder</button>
-              <span class="request-actions-hint">Fiyat ve tarih onayı telefonda verilir.</span>
             </div>
           </form>
         </div>
@@ -2636,6 +2604,41 @@
     </div>
   </dialog>
 
+  <!-- ═══ PLATFORMS ═══ -->
+  <section class="platforms" id="platformlar">
+    <div class="container">
+      <div class="platforms-header reveal">
+        <div class="section-eyebrow">Online Sipariş</div>
+        <h2 class="section-title">Bizi Buralarda da<br>Bulabilirsiniz</h2>
+        <p class="section-subtitle">Günlük ürünler için Getir, özel siparişler için talep formu.</p>
+      </div>
+
+      <div class="platforms-grid">
+        <a href="https://getir.com/yemek/restoran/ferhat-patisseria-akdeniz-nusratiye-mah-akdeniz-mersin/" class="platform-card reveal" target="_blank" rel="noopener noreferrer">
+          <div class="platform-icon platform-icon--getir" style="background: none; padding: 0; overflow: hidden;">
+            <img src="images-enhanced/getir-icon.png" alt="Getir" width="44" height="44" style="border-radius: 12px; display: block;">
+          </div>
+          <div>
+            <div class="platform-name">GetirYemek</div>
+            <div class="platform-desc">Hızlı teslimat ile sipariş</div>
+          </div>
+          <span class="platform-arrow">&rarr;</span>
+        </a>
+
+        <a href="https://www.instagram.com/ferhatpatisserie/" class="platform-card reveal reveal-delay-1" target="_blank" rel="noopener noreferrer">
+          <div class="platform-icon platform-icon--instagram">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </div>
+          <div>
+            <div class="platform-name">Instagram</div>
+            <div class="platform-desc">Vitrinimiz ve yeni ürünler</div>
+          </div>
+          <span class="platform-arrow">&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- ═══ CONTACT ═══ -->
   <section class="contact" id="iletisim">
     <div class="container">
@@ -2647,7 +2650,7 @@
       <div class="contact-grid">
         <div class="contact-info-list reveal">
           <div class="contact-item">
-            <div class="contact-item-icon">📍</div>
+            <div class="contact-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></svg></div>
             <div>
               <div class="contact-item-label">Adres</div>
               <div class="contact-item-value">Nusratiye Mah, Kuvayi Milliye Cad No:126/E<br>33080 Akdeniz / Mersin</div>
@@ -2655,7 +2658,7 @@
           </div>
 
           <div class="contact-item">
-            <div class="contact-item-icon">📞</div>
+            <div class="contact-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 3.5h3l1.6 4-2 1.3a11 11 0 0 0 6.1 6.1l1.3-2 4 1.6v3a2 2 0 0 1-2.2 2A15.5 15.5 0 0 1 3.5 5.7a2 2 0 0 1 2-2.2z"/></svg></div>
             <div>
               <div class="contact-item-label">Telefon</div>
               <div class="contact-item-value">
@@ -2666,7 +2669,7 @@
           </div>
 
           <div class="contact-item">
-            <div class="contact-item-icon">🕐</div>
+            <div class="contact-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></div>
             <div>
               <div class="contact-item-label">Çalışma Saatleri</div>
               <div class="contact-item-value" style="color: var(--gold); font-weight: 600;">24 Saat Açık — Her Gün</div>
@@ -2674,18 +2677,10 @@
           </div>
 
           <div class="contact-item">
-            <div class="contact-item-icon">💳</div>
+            <div class="contact-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5 5.2 5h13.6L20 9.5"/><path d="M4 9.5a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0 2.7 2.7 0 0 0 5.3 0"/><path d="M5.5 12v7.5h13V12"/><path d="M10 19.5v-5h4v5"/></svg></div>
             <div>
-              <div class="contact-item-label">Ödeme</div>
-              <div class="contact-item-value">Nakit & Kredi Kartı</div>
-            </div>
-          </div>
-
-          <div class="contact-item">
-            <div class="contact-item-icon">📶</div>
-            <div>
-              <div class="contact-item-label">Diğer</div>
-              <div class="contact-item-value">Ücretsiz Wi-Fi · TV</div>
+              <div class="contact-item-label">Dükkânda</div>
+              <div class="contact-item-value">Nakit ve kart geçerli · Ücretsiz Wi-Fi</div>
             </div>
           </div>
 
