@@ -269,13 +269,14 @@ function validate(fd) {
   if (teslim_sekli === 'adrese-teslim' && adres.length < 8) return bad('adres', 'Teslimat adresini yazın.');
 
   const pasta_yazisi = g('pasta_yazisi').slice(0, 120);
+  const diger_aciklama = g('diger_aciklama').slice(0, 120);
+  if (tur === 'diger' && diger_aciklama.length < 3) return bad('diger_aciklama', 'Ne istediğinizi kısaca yazın.');
   const notlar = g('notlar');
   if (notlar.length > 1500) return bad('notlar', 'Not en fazla 1500 karakter olabilir.');
-  if (tur === 'diger' && notlar.length < 5) return bad('notlar', 'Ne istediğinizi kısaca yazın.');
 
   if (g('kvkk') !== '1') return bad('kvkk', 'Devam etmek için aydınlatma metnini onaylayın.');
 
-  return { data: { ad_soyad, telefon, eposta, tur, tur_label: ORDER_TYPES[tur], teslim_tarihi, kisi_sayisi, miktar, adet, teslim_saati, etkinlik, etkinlik_label: EVENT_TYPES[etkinlik] || '', teslim_sekli, teslim_sekli_label: DELIVERY[teslim_sekli] || '', adres, pasta_yazisi, notlar, kvkk_onay: true } };
+  return { data: { ad_soyad, telefon, eposta, tur, tur_label: ORDER_TYPES[tur], teslim_tarihi, kisi_sayisi, miktar, adet, teslim_saati, etkinlik, etkinlik_label: EVENT_TYPES[etkinlik] || '', teslim_sekli, teslim_sekli_label: DELIVERY[teslim_sekli] || '', adres, pasta_yazisi, diger_aciklama, notlar, kvkk_onay: true } };
 }
 
 function normalizePhone(raw) {
@@ -321,6 +322,7 @@ async function createAirtableRecord(env, meta, data, stored, photoBase) {
     'Teslim şekli': data.teslim_sekli_label || undefined,
     'Adres': data.adres || '',
     'Pasta yazısı': data.pasta_yazisi || '',
+    'Diğer (açıklama)': data.diger_aciklama || '',
     'Notlar': data.notlar || '',
     'Şehir': [meta.city, meta.country].filter(Boolean).join(', '),
     'Cihaz': meta.device,
@@ -361,6 +363,7 @@ async function resend(env, msg) {
 
 function summaryLine(data) {
   const parts = [data.ad_soyad, fmtDateTr(data.teslim_tarihi)];
+  if (data.diger_aciklama) parts.push(data.diger_aciklama);
   if (data.etkinlik_label) parts.push(data.etkinlik_label);
   if (data.kisi_sayisi) parts.push(`${data.kisi_sayisi} kişi`);
   else if (data.adet) parts.push(`${data.adet} adet`);
@@ -378,6 +381,7 @@ async function sendOwnerEmail(env, meta, data, stored, photoBase, airtableUrl, a
     ['Teslim şekli', data.teslim_sekli_label || '—'],
     ['Adres', data.adres || '—'],
     ['Pasta yazısı', data.pasta_yazisi || '—'],
+    ['Diğer (açıklama)', data.diger_aciklama || '—'],
     ['Notlar', data.notlar || '—'],
     ['Nereden', [meta.city, meta.country].filter(Boolean).join(', ') || '—'],
     ['Zaman', meta.created_at_tr]
@@ -412,7 +416,7 @@ async function sendOwnerEmail(env, meta, data, stored, photoBase, airtableUrl, a
 }
 
 async function sendCustomerEmail(env, meta, data) {
-  const what = [data.tur_label, data.kisi_sayisi ? `${data.kisi_sayisi} kişilik` : '', data.adet ? `${data.adet} adet` : '', data.miktar].filter(Boolean).join(', ');
+  const what = [data.diger_aciklama || data.tur_label, data.kisi_sayisi ? `${data.kisi_sayisi} kişilik` : '', data.adet ? `${data.adet} adet` : '', data.miktar].filter(Boolean).join(', ');
   const html = `
 <div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:0 auto;color:#1a1410">
   <h2 style="font-weight:600;margin:0 0 6px">Talebiniz bize ulaştı</h2>

@@ -63,7 +63,6 @@
 
 .field { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 .field--full { grid-column: 1 / -1; }
-.field--contact { margin-top: 10px; }
 .field[hidden] { display: none; }
 
 .field label {

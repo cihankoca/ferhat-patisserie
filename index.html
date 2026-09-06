@@ -2454,6 +2454,22 @@
         <div class="request-card reveal reveal-delay-1">
           <form class="request-form" id="talepForm" action="/api/talep" method="post" enctype="multipart/form-data" novalidate>
             <div class="field field--half">
+              <label for="f-ad">Ad Soyad<span class="req">*</span></label>
+              <input id="f-ad" name="ad_soyad" type="text" autocomplete="name" required maxlength="80" data-required-msg="Adınızı ve soyadınızı yazın.">
+              <div class="field-error"></div>
+            </div>
+            <div class="field field--half">
+              <label for="f-tel">Telefon<span class="req">*</span></label>
+              <input id="f-tel" name="telefon" type="tel" inputmode="tel" autocomplete="tel" placeholder="0540 314 33 33" required data-required-msg="Sizi arayabilmemiz için telefonunuzu yazın.">
+              <div class="field-error"></div>
+            </div>
+            <div class="field field--half">
+              <label for="f-eposta">E-posta<span class="opt">isteğe bağlı</span></label>
+              <input id="f-eposta" name="eposta" type="email" inputmode="email" autocomplete="email" maxlength="120">
+              <div class="field-hint">Yazarsanız talep onayınızı e-postayla da gönderiyoruz; yazmazsanız yalnızca telefonla ararız.</div>
+              <div class="field-error"></div>
+            </div>
+            <div class="field field--half">
               <label for="f-tur">Sipariş türü<span class="req">*</span></label>
               <select id="f-tur" name="tur" required data-required-msg="Ne tür bir sipariş istediğinizi seçin.">
                 <option value="">Seçin…</option>
@@ -2463,7 +2479,6 @@
                 <option value="catering">Catering / kurumsal</option>
                 <option value="diger">Diğer</option>
               </select>
-              <div class="field-hint">Örn. doğum günü pastası, 2 kg kurabiye, 100 adet poğaça, ofis ikramı.</div>
               <div class="field-error"></div>
             </div>
             <div class="field field--half">
@@ -2472,6 +2487,11 @@
               <div class="field-error"></div>
             </div>
 
+            <div class="field field--full" data-types="diger" data-required-for="diger" hidden>
+              <label for="f-diger">Ne istiyorsunuz?<span class="req">*</span><span class="opt" hidden>isteğe bağlı</span></label>
+              <input id="f-diger" name="diger_aciklama" type="text" maxlength="120" placeholder="örn. 30 kişilik brunch tabağı, glütensiz kek, bayram tepsisi…" data-required-msg="Ne istediğinizi kısaca yazın.">
+              <div class="field-error"></div>
+            </div>
             <div class="field field--half" data-types="ozel-pasta,catering" data-required-for="ozel-pasta,catering" hidden>
               <label for="f-kisi">Kişi sayısı<span class="req">*</span><span class="opt" hidden>isteğe bağlı</span></label>
               <input id="f-kisi" name="kisi_sayisi" type="number" inputmode="numeric" min="1" max="5000" placeholder="örn. 12" data-required-msg="Kaç kişilik olduğunu yazın.">
@@ -2545,22 +2565,6 @@
               <div class="field-error"></div>
             </div>
 
-            <div class="field field--half field--contact">
-              <label for="f-ad">Ad Soyad<span class="req">*</span></label>
-              <input id="f-ad" name="ad_soyad" type="text" autocomplete="name" required maxlength="80" data-required-msg="Adınızı ve soyadınızı yazın.">
-              <div class="field-error"></div>
-            </div>
-            <div class="field field--half">
-              <label for="f-tel">Telefon<span class="req">*</span></label>
-              <input id="f-tel" name="telefon" type="tel" inputmode="tel" autocomplete="tel" placeholder="0540 314 33 33" required data-required-msg="Sizi arayabilmemiz için telefonunuzu yazın.">
-              <div class="field-error"></div>
-            </div>
-            <div class="field field--full">
-              <label for="f-eposta">E-posta<span class="opt">isteğe bağlı</span></label>
-              <input id="f-eposta" name="eposta" type="email" inputmode="email" autocomplete="email" maxlength="120">
-              <div class="field-hint">Yazarsanız talebinizin onayını e-postayla da gönderiyoruz.</div>
-              <div class="field-error"></div>
-            </div>
             <div class="field field--full">
               <label class="consent">
                 <input type="checkbox" name="kvkk" value="1" required data-required-msg="Devam etmek için aydınlatma metnini onaylayın.">
