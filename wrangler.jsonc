@@ -21,11 +21,11 @@
   "vars": {
     // Public, non-secret configuration. Secrets go in `wrangler secret put` / .dev.vars:
     //   AIRTABLE_TOKEN, RESEND_API_KEY
-    "AIRTABLE_BASE": "",
+    "AIRTABLE_BASE": "appIECoE2FmwD8lbH",
     "AIRTABLE_TABLE": "Talepler",
-    "AIRTABLE_TABLE_ID": "",
-    "MAIL_FROM": "",
-    "OWNER_EMAIL": "",
+    "AIRTABLE_TABLE_ID": "tbl3cxkReQkqrArlA",
+    "MAIL_FROM": "Ferhat Patisserie via StriveForward <noreply@striveforward.io>",
+    "OWNER_EMAIL": "1cihankoca@gmail.com",
     "MAIL_REPLY_TO": "",
     // Optional. Empty = photos served by this Worker at <origin>/foto/{id}/{n}.{ext} (R2 bucket stays private).
     "PHOTO_PUBLIC_BASE": "",
