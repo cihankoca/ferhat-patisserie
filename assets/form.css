@@ -42,7 +42,7 @@
 
 .request-note {
   margin-top: 34px; padding: 18px 20px;
-  border-left: 2px solid var(--gold);
+  border-radius: 12px;
   background: rgba(201, 169, 110, 0.08);
   font-size: 0.85rem; color: var(--espresso); line-height: 1.6;
   border-radius: 0 12px 12px 0;
