@@ -63,6 +63,17 @@
 
 .field { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 .field--full { grid-column: 1 / -1; }
+.field--diger {
+  margin-top: -8px;
+  padding: 14px 16px 16px;
+  border-radius: 12px;
+  background: rgba(201, 169, 110, 0.10);
+  border: 1px solid rgba(201, 169, 110, 0.35);
+  animation: diger-in 0.35s var(--ease-out-expo) both;
+}
+.field--diger input { background: var(--white); }
+@keyframes diger-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .field--diger { animation: none; } }
 .field[hidden] { display: none; }
 
 .field label {
