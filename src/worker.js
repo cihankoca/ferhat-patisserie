@@ -2,8 +2,9 @@
  * Ferhat Patisserie — Cloudflare Worker
  *
  * Routes
- *   POST /api/talep   → custom order request (multipart/form-data)
- *   GET  /api/health  → { ok: true }
+ *   POST /api/talep            → custom order request (multipart/form-data)
+ *   GET  /api/health           → { ok: true }
+ *   GET  /foto/{id}/{n}.{ext}  → original photo from R2 (unguessable id, noindex; bucket stays private)
  *   *                 → static assets (index.html etc.) with security headers
  *
  * Bindings (wrangler.jsonc)
@@ -12,9 +13,9 @@
  *   STATE   KV — dedup by submission_id, rate limiting
  *
  * Secrets / vars (optional — each integration is skipped, and logged, when unset)
- *   AIRTABLE_TOKEN, AIRTABLE_BASE, AIRTABLE_TABLE
+ *   AIRTABLE_TOKEN, AIRTABLE_BASE, AIRTABLE_TABLE, AIRTABLE_TABLE_ID (record links)
  *   RESEND_API_KEY, MAIL_FROM, OWNER_EMAIL, MAIL_REPLY_TO
- *   PHOTO_PUBLIC_BASE   public base URL for PHOTOS (needed for Airtable attachments)
+ *   PHOTO_PUBLIC_BASE   optional; defaults to `<site origin>/foto` (served by this Worker)
  *   ALLOWED_ORIGINS     comma-separated; defaults to same-origin only
  *
  * Design rules (spec 2026-09-04 §6): validate → R2 first (durable) → Airtable → emails.
@@ -68,6 +69,11 @@ export default {
 
     if (url.pathname === '/api/health') {
       return json({ ok: true, ts: new Date().toISOString() });
+    }
+    const foto = url.pathname.match(/^\/foto\/([a-z0-9]+-[a-z0-9]+)\/([1-9])\.(jpg|png|webp|heic)$/);
+    if (foto) {
+      if (request.method !== 'GET' && request.method !== 'HEAD') return json({ ok: false, message: 'Method not allowed' }, 405);
+      return servePhoto(env, request, `${foto[1]}/${foto[2]}.${foto[3]}`);
     }
     if (url.pathname === '/api/talep') {
       if (request.method === 'OPTIONS') return cors(request, env, new Response(null, { status: 204 }));
@@ -171,11 +177,12 @@ async function handleTalep(request, env, ctx) {
   console.log(`[talep] STORED id=${id} ref=${referans} photos=${stored.length} type=${data.tur} city=${meta.city}`);
 
   // 8. Airtable (best effort, logged)
+  const photoBase = (env.PHOTO_PUBLIC_BASE || new URL(request.url).origin + '/foto').replace(/\/$/, '');
   let airtableUrl = '';
   let airtableWarning = '';
   if (env.AIRTABLE_TOKEN && env.AIRTABLE_BASE && env.AIRTABLE_TABLE) {
     try {
-      airtableUrl = await createAirtableRecord(env, meta, data, stored);
+      airtableUrl = await createAirtableRecord(env, meta, data, stored, photoBase);
       console.log(`[talep] AIRTABLE_OK id=${id}`);
     } catch (err) {
       airtableWarning = String(err && err.message || err).slice(0, 300);
@@ -186,9 +193,10 @@ async function handleTalep(request, env, ctx) {
   }
 
   // 9. Emails (best effort, logged). Owner first, then customer.
-  if (env.RESEND_API_KEY && env.MAIL_FROM && env.OWNER_EMAIL) {
+  const mailConfigured = !!(env.RESEND_API_KEY && env.MAIL_FROM && env.OWNER_EMAIL);
+  if (mailConfigured) {
     ctx.waitUntil((async () => {
-      try { await sendOwnerEmail(env, meta, data, stored, airtableUrl, airtableWarning); console.log(`[talep] MAIL_OWNER_OK id=${id}`); }
+      try { await sendOwnerEmail(env, meta, data, stored, photoBase, airtableUrl, airtableWarning); console.log(`[talep] MAIL_OWNER_OK id=${id}`); }
       catch (err) { console.error(`[talep] MAIL_OWNER_FAILED id=${id} ${err && err.message}`); }
       if (data.eposta) {
         try { await sendCustomerEmail(env, meta, data); console.log(`[talep] MAIL_CUSTOMER_OK id=${id}`); }
@@ -199,8 +207,8 @@ async function handleTalep(request, env, ctx) {
     console.warn(`[talep] EMAIL_SKIPPED id=${id} (not configured)`);
   }
 
-  // 10. Remember the answer for retries
-  const answer = { ok: true, id, referans };
+  // 10. Remember the answer for retries. `mail` = a confirmation e-mail is actually being sent to the customer.
+  const answer = { ok: true, id, referans, mail: mailConfigured && !!data.eposta };
   if (submissionId && env.STATE) ctx.waitUntil(env.STATE.put('sub:' + submissionId, JSON.stringify(answer), { expirationTtl: DEDUP_TTL_SEC }));
   return json(answer);
 }
@@ -295,7 +303,7 @@ function sniffImage(b) {
 // ─────────────────────────────────────────────────────────────
 // Airtable
 // ─────────────────────────────────────────────────────────────
-async function createAirtableRecord(env, meta, data, stored) {
+async function createAirtableRecord(env, meta, data, stored, photoBase) {
   const fields = {
     'Referans': meta.referans,
     'Durum': 'Yeni',
@@ -320,8 +328,8 @@ async function createAirtableRecord(env, meta, data, stored) {
     'KVKK onayı': true,
     'Oluşturma (TR)': meta.created_at_tr
   };
-  if (env.PHOTO_PUBLIC_BASE && stored.length) {
-    fields['Fotoğraflar'] = stored.map(p => ({ url: `${env.PHOTO_PUBLIC_BASE.replace(/\/$/, '')}/${p.key}`, filename: p.name }));
+  if (stored.length) {
+    fields['Fotoğraflar'] = stored.map(p => ({ url: `${photoBase}/${p.key}`, filename: p.name }));
   }
   Object.keys(fields).forEach(k => fields[k] === undefined && delete fields[k]);
 
@@ -333,7 +341,9 @@ async function createAirtableRecord(env, meta, data, stored) {
   if (!res.ok) throw new Error(`Airtable ${res.status}: ${(await res.text()).slice(0, 200)}`);
   const body = await res.json();
   const recId = body.records && body.records[0] && body.records[0].id;
-  return recId ? `https://airtable.com/${env.AIRTABLE_BASE}/${env.AIRTABLE_TABLE_ID || ''}/${recId}`.replace(/\/\/+/g, '/').replace(':/', '://') : '';
+  if (!recId) return '';
+  // Record deep link needs the table id (tblXXX); without it fall back to the base.
+  return env.AIRTABLE_TABLE_ID ? `https://airtable.com/${env.AIRTABLE_BASE}/${env.AIRTABLE_TABLE_ID}/${recId}` : `https://airtable.com/${env.AIRTABLE_BASE}`;
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -358,7 +368,7 @@ function summaryLine(data) {
   return parts.join(' · ');
 }
 
-async function sendOwnerEmail(env, meta, data, stored, airtableUrl, airtableWarning) {
+async function sendOwnerEmail(env, meta, data, stored, photoBase, airtableUrl, airtableWarning) {
   const rows = [
     ['Referans', meta.referans],
     ['Sipariş türü', data.tur_label],
@@ -373,7 +383,7 @@ async function sendOwnerEmail(env, meta, data, stored, airtableUrl, airtableWarn
     ['Zaman', meta.created_at_tr]
   ];
   const tel = data.telefon;
-  const photoLinks = (env.PHOTO_PUBLIC_BASE ? stored.map(p => `${env.PHOTO_PUBLIC_BASE.replace(/\/$/, '')}/${p.key}`) : []);
+  const photoLinks = stored.map(p => `${photoBase}/${p.key}`);
   const html = `
 <div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;margin:0 auto;color:#1a1410">
   <h2 style="font-weight:600;margin:0 0 6px">🎂 Yeni sipariş talebi</h2>
@@ -421,6 +431,25 @@ async function sendCustomerEmail(env, meta, data) {
     html, text,
     headers: { 'X-Entity-Ref-ID': meta.id + ':customer' }
   });
+}
+
+// ─────────────────────────────────────────────────────────────
+// GET /foto/{id}/{n}.{ext} — photo bytes from the private R2 bucket
+// ─────────────────────────────────────────────────────────────
+async function servePhoto(env, request, key) {
+  const obj = await env.PHOTOS.get(key);
+  if (!obj) return new Response('Not found', { status: 404, headers: { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex' } });
+  const h = new Headers();
+  h.set('Content-Type', (obj.httpMetadata && obj.httpMetadata.contentType) || 'application/octet-stream');
+  h.set('Content-Length', String(obj.size));
+  h.set('ETag', obj.httpEtag);
+  h.set('Cache-Control', 'private, max-age=3600');
+  h.set('Content-Disposition', 'inline');
+  h.set('X-Content-Type-Options', 'nosniff');
+  h.set('X-Robots-Tag', 'noindex, nofollow');
+  h.set('Content-Security-Policy', "default-src 'none'; sandbox");
+  if (request.headers.get('if-none-match') === obj.httpEtag) return new Response(null, { status: 304, headers: h });
+  return new Response(request.method === 'HEAD' ? null : obj.body, { status: 200, headers: h });
 }
 
 // ─────────────────────────────────────────────────────────────

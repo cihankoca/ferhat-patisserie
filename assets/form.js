@@ -252,7 +252,7 @@
         '<div class="request-success-title">Talebiniz alındı</div>' +
         (ref ? '<div class="request-success-ref">Referans: ' + escapeHtml(ref) + '</div>' : '') +
         '<p class="request-success-text">' +
-          (email ? '<strong>' + escapeHtml(email) + '</strong> adresine bir onay e-postası gönderdik, lütfen gelen kutunuzu (ve spam klasörünü) kontrol edin. ' : '') +
+          (data.mail === true && email ? '<strong>' + escapeHtml(email) + '</strong> adresine bir onay e-postası gönderdik, lütfen gelen kutunuzu (ve spam klasörünü) kontrol edin. ' : '') +
           'Ferhat Patisserie en kısa sürede <strong>' + escapeHtml(form.elements['telefon'].value) + '</strong> numarasından sizi arayacak; fiyat ve detayları birlikte netleştireceğiz.' +
         '</p>' +
         '<a href="#menu" class="btn btn-outline">Menüye Dön</a>' +

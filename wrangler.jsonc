@@ -16,18 +16,18 @@
     { "binding": "PHOTOS", "bucket_name": "ferhat-talep" }
   ],
   "kv_namespaces": [
-    // Replace `id` with the real namespace id after `wrangler kv namespace create STATE`.
-    // Local dev (`wrangler dev`) works with this placeholder.
-    { "binding": "STATE", "id": "00000000000000000000000000000000" }
+    { "binding": "STATE", "id": "c89bea22b3404d6ca2b6a32bbd4f3072" }
   ],
   "vars": {
     // Public, non-secret configuration. Secrets go in `wrangler secret put` / .dev.vars:
     //   AIRTABLE_TOKEN, RESEND_API_KEY
     "AIRTABLE_BASE": "",
     "AIRTABLE_TABLE": "Talepler",
+    "AIRTABLE_TABLE_ID": "",
     "MAIL_FROM": "",
     "OWNER_EMAIL": "",
     "MAIL_REPLY_TO": "",
+    // Optional. Empty = photos served by this Worker at <origin>/foto/{id}/{n}.{ext} (R2 bucket stays private).
     "PHOTO_PUBLIC_BASE": "",
     "ALLOWED_ORIGINS": ""
   }
