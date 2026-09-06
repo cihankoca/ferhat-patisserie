@@ -16,6 +16,7 @@
  *   AIRTABLE_TOKEN, AIRTABLE_BASE, AIRTABLE_TABLE, AIRTABLE_TABLE_ID (record links)
  *   RESEND_API_KEY, MAIL_FROM, OWNER_EMAIL, MAIL_REPLY_TO
  *   PHOTO_PUBLIC_BASE   optional; defaults to `<site origin>/foto` (served by this Worker)
+ *   SITE_ORIGIN         optional; absolute origin for logo/links inside e-mails
  *   ALLOWED_ORIGINS     comma-separated; defaults to same-origin only
  *
  * Design rules (spec 2026-09-04 §6): validate → R2 first (durable) → Airtable → emails.
@@ -371,68 +372,103 @@ function summaryLine(data) {
   return parts.join(' · ');
 }
 
+// Shared shell: ivory ground, white card, dark header with the logo. Inline styles only (e-mail clients).
+function emailShell(env, meta, { preheader, body }) {
+  const origin = (env.SITE_ORIGIN || 'https://ferhat-patisserie.1cihankoca.workers.dev').replace(/\/$/, '');
+  return `<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Ferhat Patisserie</title></head>
+<body style="margin:0;padding:0;background:#faf6f0;">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;color:#faf6f0;">${esc(preheader)}</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#faf6f0;padding:32px 12px;">
+<tr><td align="center">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:18px;overflow:hidden;border:1px solid #f0ebe3;">
+  <tr><td style="background:#1a1410;padding:26px 28px;">
+    <table role="presentation" cellpadding="0" cellspacing="0"><tr>
+      <td style="padding-right:14px;"><img src="${origin}/images-enhanced/profil-nav.png" width="56" height="56" alt="Ferhat Patisserie" style="display:block;border-radius:50%;border:1px solid #c9a96e;"></td>
+      <td style="font-family:Georgia,'Times New Roman',serif;color:#faf6f0;font-size:22px;line-height:1.15;">Ferhat <span style="color:#c9a96e;font-style:italic;">Patisserie</span><div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#a8957a;margin-top:6px;">Mersin · 24 saat açık</div></td>
+    </tr></table>
+  </td></tr>
+  <tr><td style="padding:30px 28px 10px;font-family:Arial,Helvetica,sans-serif;color:#1a1410;">${body}</td></tr>
+  <tr><td style="padding:18px 28px 26px;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.6;color:#8a7a6e;border-top:1px solid #f0ebe3;">
+    Ferhat Patisserie · Nusratiye Mah, Kuvayi Milliye Cad No:126/E, Akdeniz / Mersin<br>
+    <a href="tel:+905403143333" style="color:#8a7a6e;">0540 314 33 33</a> · <a href="${origin}" style="color:#8a7a6e;">ferhat-patisserie</a>
+  </td></tr>
+</table>
+<div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#b3a696;margin-top:14px;">Talep ${esc(meta.referans)}</div>
+</td></tr></table></body></html>`;
+}
+const H1 = 'font-family:Georgia,\'Times New Roman\',serif;font-weight:normal;font-size:26px;line-height:1.2;margin:0 0 6px;color:#1a1410;';
+const P = 'font-size:15px;line-height:1.65;margin:0 0 14px;color:#3d322a;';
+const PILL = 'display:inline-block;padding:7px 14px;border-radius:100px;background:#f5e6c8;color:#1a1410;font-size:13px;letter-spacing:1px;font-weight:bold;';
+const BTN = 'display:inline-block;background:#c9a96e;color:#0a0a0a;text-decoration:none;font-weight:bold;font-size:15px;padding:14px 22px;border-radius:100px;';
+function rowsTable(rows) {
+  return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;margin:6px 0 18px;">${rows.map(([k, v]) =>
+    `<tr><td style="padding:9px 0;border-bottom:1px solid #f0ebe3;color:#8a7a6e;width:36%;vertical-align:top;">${esc(k)}</td><td style="padding:9px 0;border-bottom:1px solid #f0ebe3;color:#1a1410;white-space:pre-wrap;vertical-align:top;">${esc(v)}</td></tr>`).join('')}</table>`;
+}
+function firstName(full) { return str(full).trim().split(/\s+/)[0] || ''; }
+
 async function sendOwnerEmail(env, meta, data, stored, photoBase, airtableUrl, airtableWarning) {
+  const tel = data.telefon;
+  const place = [meta.city, meta.country].filter(Boolean).join(', ');
   const rows = [
-    ['Referans', meta.referans],
-    ['Sipariş türü', data.tur_label],
-    ['Teslim tarihi', fmtDateTr(data.teslim_tarihi) + (data.teslim_saati ? ' ' + data.teslim_saati : '')],
+    ['Sipariş türü', data.tur_label + (data.diger_aciklama ? ' — ' + data.diger_aciklama : '')],
+    ['Teslim', fmtDateTr(data.teslim_tarihi) + (data.teslim_saati ? ' · ' + data.teslim_saati : '')],
     ['Kişi / miktar', data.kisi_sayisi ? `${data.kisi_sayisi} kişi` : (data.adet ? `${data.adet} adet` : (data.miktar || '—'))],
     ['Etkinlik', data.etkinlik_label || '—'],
     ['Teslim şekli', data.teslim_sekli_label || '—'],
     ['Adres', data.adres || '—'],
     ['Pasta yazısı', data.pasta_yazisi || '—'],
-    ['Diğer (açıklama)', data.diger_aciklama || '—'],
     ['Notlar', data.notlar || '—'],
-    ['Nereden', [meta.city, meta.country].filter(Boolean).join(', ') || '—'],
+    ['E-posta', data.eposta || '— (müşteri yazmadı; onay yalnızca telefonla)'],
     ['Zaman', meta.created_at_tr]
   ];
-  const tel = data.telefon;
+  if (place) rows.push(['Gönderim yeri (IP\'den tahmini)', place]);
   const photoLinks = stored.map(p => `${photoBase}/${p.key}`);
-  const html = `
-<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;margin:0 auto;color:#1a1410">
-  <h2 style="font-weight:600;margin:0 0 6px">🎂 Yeni sipariş talebi</h2>
-  <p style="margin:0 0 18px;color:#5a4a3e">${esc(summaryLine(data))}</p>
-  <p style="margin:0 0 18px">
-    <a href="tel:${esc(tel)}" style="display:inline-block;background:#c9a96e;border-radius:8px;padding:12px 18px;text-decoration:none;font-weight:600"><span style="color:#0a0a0a">📞 ${esc(fmtPhone(tel))} — Ara</span></a>
-    ${data.eposta ? ` &nbsp; <a href="mailto:${esc(data.eposta)}" style="color:#1a1410">${esc(data.eposta)}</a>` : ''}
-  </p>
-  <table style="border-collapse:collapse;width:100%;font-size:14px">
-    ${rows.map(([k, v]) => `<tr><td style="padding:8px 10px;border-bottom:1px solid #f0ebe3;color:#5a4a3e;width:38%">${esc(k)}</td><td style="padding:8px 10px;border-bottom:1px solid #f0ebe3;white-space:pre-wrap">${esc(v)}</td></tr>`).join('')}
-  </table>
-  ${photoLinks.length ? `<h3 style="font-size:15px;margin:22px 0 8px">Referans fotoğraf${photoLinks.length > 1 ? 'lar' : ''}</h3>` + photoLinks.map(u => `<a href="${esc(u)}"><img src="${esc(u)}" alt="Referans fotoğraf" style="max-width:100%;border-radius:10px;margin:0 0 10px;display:block"></a>`).join('') : (stored.length ? `<p style="color:#5a4a3e;font-size:13px">${stored.length} fotoğraf kaydedildi (görüntüleme adresi yapılandırılmadı).</p>` : '')}
-  ${airtableUrl ? `<p style="margin:22px 0 0"><a href="${esc(airtableUrl)}" style="color:#1a1410">Airtable'da aç →</a></p>` : ''}
-  ${airtableWarning ? `<p style="margin:16px 0 0;padding:10px 12px;background:#fff3f3;border-radius:8px;color:#7a2e2e;font-size:13px">⚠️ Airtable kaydı oluşturulamadı; talep dosya deposunda güvende (ID ${esc(meta.id)}). Hata: ${esc(airtableWarning)}</p>` : ''}
-  <p style="margin:26px 0 0;color:#8a7a6e;font-size:12px">Talep ID ${esc(meta.id)} · ${esc(meta.device)} · IP ${esc(meta.ip_masked)}</p>
-</div>`;
-  const text = `Yeni sipariş talebi\n${summaryLine(data)}\nTelefon: ${fmtPhone(tel)}\n` + rows.map(([k, v]) => `${k}: ${v}`).join('\n') + (photoLinks.length ? `\nFotoğraflar:\n${photoLinks.join('\n')}` : '') + (airtableUrl ? `\nAirtable: ${airtableUrl}` : '');
+  const body = `
+<h1 style="${H1}">Yeni sipariş talebi</h1>
+<p style="${P}">${esc(summaryLine(data))}</p>
+<p style="margin:0 0 20px;"><span style="${PILL}">${esc(meta.referans)}</span></p>
+<p style="margin:0 0 22px;"><a href="tel:${esc(tel)}" style="${BTN}">${esc(fmtPhone(tel))} · Ara</a></p>
+${rowsTable(rows)}
+${photoLinks.length ? `<div style="font-size:13px;color:#8a7a6e;margin:0 0 8px;">Referans fotoğraf${photoLinks.length > 1 ? 'lar' : ''} (${photoLinks.length})</div>` + photoLinks.map(u => `<a href="${esc(u)}"><img src="${esc(u)}" alt="Referans fotoğraf" style="max-width:100%;border-radius:12px;margin:0 0 10px;display:block;border:1px solid #f0ebe3;"></a>`).join('') : ''}
+${airtableUrl ? `<p style="margin:18px 0 0;"><a href="${esc(airtableUrl)}" style="color:#1a1410;font-size:14px;">Airtable'da aç →</a></p>` : ''}
+${airtableWarning ? `<p style="margin:16px 0 0;padding:10px 12px;background:#fff3f3;border-radius:8px;color:#7a2e2e;font-size:13px;">⚠️ Airtable kaydı oluşturulamadı; talep dosya deposunda güvende (ID ${esc(meta.id)}). Hata: ${esc(airtableWarning)}</p>` : ''}
+<p style="margin:22px 0 0;font-size:11px;color:#b3a696;">Talep ID ${esc(meta.id)} · ${esc(meta.device)} · IP ${esc(meta.ip_masked)}</p>`;
+  const text = `Yeni sipariş talebi\n${summaryLine(data)}\nReferans: ${meta.referans}\nTelefon: ${fmtPhone(tel)}\n` + rows.map(([k, v]) => `${k}: ${v}`).join('\n') + (photoLinks.length ? `\nFotoğraflar:\n${photoLinks.join('\n')}` : '') + (airtableUrl ? `\nAirtable: ${airtableUrl}` : '');
   return resend(env, {
     from: env.MAIL_FROM,
     to: env.OWNER_EMAIL.split(',').map(s => s.trim()).filter(Boolean),
     reply_to: data.eposta || env.MAIL_REPLY_TO || undefined,
     subject: `🎂 Yeni talep · ${summaryLine(data)}`,
-    html, text,
+    html: emailShell(env, meta, { preheader: `${summaryLine(data)} · ${fmtPhone(tel)}`, body }), text,
     headers: { 'X-Entity-Ref-ID': meta.id }
   });
 }
 
 async function sendCustomerEmail(env, meta, data) {
+  const name = firstName(data.ad_soyad);
   const what = [data.diger_aciklama || data.tur_label, data.kisi_sayisi ? `${data.kisi_sayisi} kişilik` : '', data.adet ? `${data.adet} adet` : '', data.miktar].filter(Boolean).join(', ');
-  const html = `
-<div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:0 auto;color:#1a1410">
-  <h2 style="font-weight:600;margin:0 0 6px">Talebiniz bize ulaştı</h2>
-  <p style="margin:0 0 16px;color:#5a4a3e">Referans: <strong style="color:#1a1410">${esc(meta.referans)}</strong></p>
-  <p style="line-height:1.6">Merhaba ${esc(data.ad_soyad)},</p>
-  <p style="line-height:1.6"><strong>${esc(fmtDateTr(data.teslim_tarihi))}</strong> tarihi için <strong>${esc(what)}</strong> talebinizi aldık. En kısa sürede <strong>${esc(fmtPhone(data.telefon))}</strong> numarasından sizi arayıp fiyatı ve detayları birlikte netleştireceğiz.</p>
-  <p style="line-height:1.6">Acele bir durum varsa bizi arayabilirsiniz: <a href="tel:+905403143333" style="color:#1a1410">0540 314 33 33</a></p>
-  <p style="line-height:1.6;margin-top:22px">Ferhat Patisserie<br><span style="color:#5a4a3e">Nusratiye Mah, Kuvayi Milliye Cad No:126/E, Akdeniz / Mersin · 24 saat açık</span></p>
-</div>`;
-  const text = `Talebiniz bize ulaştı — Referans ${meta.referans}\n\nMerhaba ${data.ad_soyad},\n${fmtDateTr(data.teslim_tarihi)} tarihi için ${what} talebinizi aldık. En kısa sürede ${fmtPhone(data.telefon)} numarasından sizi arayacağız.\n\nAcele bir durum varsa: 0540 314 33 33\nFerhat Patisserie — Mersin`;
+  const rows = [
+    ['Ne', what],
+    ['Ne zaman', fmtDateTr(data.teslim_tarihi) + (data.teslim_saati ? ' · ' + data.teslim_saati : '')],
+    ['Sizi arayacağımız numara', fmtPhone(data.telefon)]
+  ];
+  if (data.etkinlik_label) rows.splice(1, 0, ['Etkinlik', data.etkinlik_label]);
+  if (data.pasta_yazisi) rows.push(['Pasta üstü yazı', data.pasta_yazisi]);
+  const body = `
+<h1 style="${H1}">Talebiniz bize ulaştı</h1>
+<p style="margin:0 0 22px;"><span style="${PILL}">${esc(meta.referans)}</span></p>
+<p style="${P}">Merhaba ${esc(name || data.ad_soyad)},</p>
+<p style="${P}">Talebinizi aldık. Ustamız fotoğrafınıza ve notlarınıza bakıp en kısa sürede sizi arayacak; fiyatı ve detayları telefonda birlikte netleştireceğiz. Bu e-posta bir sipariş onayı değildir.</p>
+${rowsTable(rows)}
+<p style="${P}">Acele bir durum varsa bize her saat ulaşabilirsiniz:</p>
+<p style="margin:0 0 8px;"><a href="tel:+905403143333" style="${BTN}">0540 314 33 33 · Ara</a></p>`;
+  const text = `Talebiniz bize ulaştı — Referans ${meta.referans}\n\nMerhaba ${name || data.ad_soyad},\nTalebinizi aldık. En kısa sürede ${fmtPhone(data.telefon)} numarasından sizi arayacağız; fiyat ve detaylar telefonda netleşir. Bu e-posta bir sipariş onayı değildir.\n\n` + rows.map(([k, v]) => `${k}: ${v}`).join('\n') + `\n\nAcele bir durum varsa: 0540 314 33 33\nFerhat Patisserie — Nusratiye Mah, Kuvayi Milliye Cad No:126/E, Akdeniz / Mersin`;
   return resend(env, {
     from: env.MAIL_FROM,
     to: [data.eposta],
     reply_to: env.MAIL_REPLY_TO || undefined,
-    subject: `Talebiniz alındı — Ferhat Patisserie (${meta.referans})`,
-    html, text,
+    subject: `${name ? name + ', t' : 'T'}alebiniz alındı · Ferhat Patisserie · ${meta.referans}`,
+    html: emailShell(env, meta, { preheader: `Talebinizi aldık, en kısa sürede sizi arayacağız. Referans ${meta.referans}.`, body }), text,
     headers: { 'X-Entity-Ref-ID': meta.id + ':customer' }
   });
 }

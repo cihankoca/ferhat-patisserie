@@ -29,6 +29,7 @@
     "MAIL_REPLY_TO": "",
     // Optional. Empty = photos served by this Worker at <origin>/foto/{id}/{n}.{ext} (R2 bucket stays private).
     "PHOTO_PUBLIC_BASE": "",
+    "SITE_ORIGIN": "https://ferhat-patisserie.1cihankoca.workers.dev",
     "ALLOWED_ORIGINS": ""
   }
 }
