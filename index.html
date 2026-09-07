@@ -2868,6 +2868,34 @@
 
   <!-- ═══ JAVASCRIPT ═══ -->
   <script>
+    // ── Scroll helpers ──
+    // html has scroll-behavior:smooth; this jumps without animating.
+    function scrollInstant(y) {
+      const root = document.documentElement;
+      const prev = root.style.scrollBehavior;
+      root.style.scrollBehavior = 'auto';
+      window.scrollTo(0, y);
+      root.style.scrollBehavior = prev;
+    }
+
+    // ── Refresh opens at the top ──
+    // Buttons and links write "#talep" etc. into the URL; a reload then re-opens on that
+    // section. Anchors below navigate without touching the URL, and a hash that arrived
+    // from an older link is dropped so the reload lands on the hero.
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+    window.addEventListener('load', () => { if (!location.hash) scrollInstant(0); });
+
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a[href^="#"]');
+      if (!a || e.defaultPrevented) return; // e.g. the KVKK link opens a dialog in form.js
+      const id = a.getAttribute('href').slice(1);
+      const target = id ? document.getElementById(id) : document.documentElement;
+      if (!target) return;
+      e.preventDefault();
+      if (id) target.scrollIntoView(); else window.scrollTo({ top: 0 });
+    });
+
     // ── Navigation scroll ──
     const nav = document.getElementById('nav');
     let menuOpen = false;
@@ -2903,12 +2931,7 @@
       } else {
         document.body.classList.remove('menu-open');
         document.body.style.top = '';
-        // Restore the exact position instantly; html has scroll-behavior:smooth, so bypass it.
-        const root = document.documentElement;
-        const prev = root.style.scrollBehavior;
-        root.style.scrollBehavior = 'auto';
-        window.scrollTo(0, menuScrollY);
-        root.style.scrollBehavior = prev;
+        scrollInstant(menuScrollY); // exact position back, no smooth-scroll animation
       }
     }
     function toggleMenu() { setMenu(!menuOpen); }
