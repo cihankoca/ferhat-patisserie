@@ -1751,6 +1751,12 @@
       }
     }
 
+    /* Phones: the two floating buttons on the right stack up to 152px from the bottom,
+       the chat launcher sits at 72px on the left — clear the copyright line and the last links. */
+    @media (max-width: 768px) {
+      .footer { padding-bottom: calc(160px + env(safe-area-inset-bottom)); }
+    }
+
     /* ═══════════════════════
        WHATSAPP FLOAT
        ═══════════════════════ */
