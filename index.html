@@ -1696,34 +1696,34 @@
 
     /* ── Brand marks: the real Instagram and Facebook logos, not monochrome glyphs ──
        Instagram: gradient tile + white glyph. Facebook: blue disc (#0866FF, 2023 mark) + white f;
-       the "f" is the cut-out of the SVG disc, so the tile background shows through as white. */
+       the "f" is the cut-out of the SVG disc, so the tile background shows through as white. No border: a 1px border leaves a white ring around the disc. */
     .contact-social a.social-ig,
     .footer-social a.social-ig,
     .nav-links .nav-mobile-social a.social-ig {
       background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
       color: #fff;
-      border-color: transparent;
+      border: 0;
     }
     .contact-social a.social-fb,
     .footer-social a.social-fb,
     .nav-links .nav-mobile-social a.social-fb {
       background: #fff;
       color: #0866ff;
-      border-color: transparent;
+      border: 0;
       border-radius: 50%;
       overflow: hidden;
     }
-    .contact-social a.social-ig svg, .footer-social a.social-ig svg, .nav-links .nav-mobile-social a.social-ig svg { width: 55%; height: 55%; }
+    .contact-social a.social-ig svg, .footer-social a.social-ig svg, .nav-links .nav-mobile-social a.social-ig svg { width: 60%; height: 60%; }
     .contact-social a.social-fb svg, .footer-social a.social-fb svg, .nav-links .nav-mobile-social a.social-fb svg { width: 100%; height: 100%; display: block; }
     /* Hover keeps the brand colours (the generic rows turn gold on hover). */
     .contact-social a.social-ig:hover, .footer-social a.social-ig:hover,
     .nav-links .nav-mobile-social a.social-ig:hover, .nav-links .nav-mobile-social a.social-ig:active {
       background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
-      color: #fff; border-color: transparent;
+      color: #fff; border: 0;
     }
     .contact-social a.social-fb:hover, .footer-social a.social-fb:hover,
     .nav-links .nav-mobile-social a.social-fb:hover, .nav-links .nav-mobile-social a.social-fb:active {
-      background: #fff; color: #0866ff; border-color: transparent;
+      background: #fff; color: #0866ff; border: 0;
     }
 
     .footer-col-title {
