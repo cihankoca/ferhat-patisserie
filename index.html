@@ -36,6 +36,7 @@
       --gold-light: #dfc291;
       --gold-bright: #f0d9a0;
       --gold-pale: #f5e6c8;
+      --gold-deep: #8a6b32; /* gold for text on light surfaces — 4.6:1 on --ivory */
       --ivory: #faf6f0;
       --ivory-deep: #f0ebe3;
       --white: #ffffff;
@@ -322,7 +323,8 @@
       transition: width 0.4s var(--ease-out-expo);
     }
 
-    .nav-links a:hover { color: var(--gold-light); }
+    .nav-links a:hover,
+    .nav-links a.is-active { color: var(--gold-light); }
     .nav-links a:hover::after { width: 100%; }
 
     .nav-badge {
@@ -378,7 +380,7 @@
         height: 100vh;
         height: 100dvh;
         padding: calc(var(--nav-height) + 12px) 28px calc(20px + env(safe-area-inset-bottom));
-        background: linear-gradient(180deg, #0a0a0a 0%, #1a1410 100%);
+        background: var(--ivory);
         flex-direction: column;
         justify-content: flex-start;
         align-items: stretch;
@@ -393,7 +395,7 @@
       .nav-links.open { transform: translateX(0); }
 
       .nav-links li {
-        border-bottom: 1px solid rgba(250, 246, 240, 0.08);
+        border-bottom: 1px solid rgba(42, 36, 32, 0.12);
         opacity: 0;
         transform: translateY(14px);
         transition: opacity 0.5s ease, transform 0.6s var(--ease-out-expo);
@@ -416,10 +418,13 @@
         font-weight: 500;
         letter-spacing: 0.01em;
         text-transform: none;
-        color: var(--ivory);
+        color: var(--charcoal);
       }
       .nav-links a::after { display: none; }
-      .nav-links li:nth-child(5) a { color: var(--gold-light); }
+      .nav-links a:hover,
+      .nav-links a:active,
+      .nav-links a.is-active,
+      .nav-links li:nth-child(5) a { color: var(--gold-deep); }
 
       .nav-mobile-foot {
         display: flex;
@@ -446,14 +451,17 @@
       .nav-mobile-foot .nav-call svg { width: 18px; height: 18px; }
       .nav-mobile-foot small {
         font-size: 0.78rem;
-        color: rgba(250, 246, 240, 0.55);
+        color: var(--mocha);
         letter-spacing: 0.08em;
         text-transform: uppercase;
         text-align: center;
       }
 
       .nav-toggle { display: block; }
+      .nav-toggle.active span { background: var(--charcoal); }
       .nav-badge { display: none; }
+      body.menu-open .nav-logo { position: relative; z-index: 1; color: var(--charcoal); }
+      body.menu-open .nav-logo span { color: var(--gold-deep); }
 
       /* Scroll lock: overflow:hidden alone is ignored by iOS Safari. JS stores scrollY in body.style.top. */
       body.menu-open {
@@ -3147,8 +3155,7 @@
         if (entry.isIntersecting) {
           const id = entry.target.id;
           navLinksAll.forEach(link => {
-            link.style.color = link.getAttribute('href') === '#' + id
-              ? 'var(--gold-light)' : '';
+            link.classList.toggle('is-active', link.getAttribute('href') === '#' + id);
           });
         }
       });
