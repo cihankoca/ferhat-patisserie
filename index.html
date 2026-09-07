@@ -228,10 +228,23 @@
 
     .nav.scrolled {
       background: rgba(10, 10, 10, 0.88);
-      backdrop-filter: blur(24px) saturate(1.4);
-      -webkit-backdrop-filter: blur(24px) saturate(1.4);
       border-bottom: 1px solid rgba(201, 169, 110, 0.1);
     }
+
+    /* The blur lives on a pseudo-element on purpose: a backdrop-filter on .nav itself makes
+       .nav the containing block of the fixed mobile panel, which then collapses to the bar's height. */
+    .nav::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      opacity: 0;
+      pointer-events: none;
+      backdrop-filter: blur(24px) saturate(1.4);
+      -webkit-backdrop-filter: blur(24px) saturate(1.4);
+      transition: opacity 0.5s var(--ease-out-expo);
+    }
+    .nav.scrolled::before { opacity: 1; }
 
     .nav-inner {
       max-width: 1280px;
@@ -362,7 +375,9 @@
       .nav-links {
         position: fixed;
         inset: 0;
-        padding: calc(var(--nav-height) + 28px) 28px 32px;
+        height: 100vh;
+        height: 100dvh;
+        padding: calc(var(--nav-height) + 12px) 28px calc(20px + env(safe-area-inset-bottom));
         background: linear-gradient(180deg, #0a0a0a 0%, #1a1410 100%);
         flex-direction: column;
         justify-content: flex-start;
@@ -371,6 +386,8 @@
         transform: translateX(100%);
         transition: transform 0.6s var(--ease-out-expo);
         overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
       }
 
       .nav-links.open { transform: translateX(0); }
@@ -392,8 +409,9 @@
 
       .nav-links a {
         display: block;
-        padding: 18px 0;
-        font-size: 1.7rem;
+        padding: 13px 0;
+        font-size: 1.5rem;
+        line-height: 1.3;
         font-family: var(--font-display);
         font-weight: 500;
         letter-spacing: 0.01em;
@@ -406,9 +424,9 @@
       .nav-mobile-foot {
         display: flex;
         flex-direction: column;
-        gap: 14px;
+        gap: 12px;
         margin-top: auto;
-        padding-top: 28px;
+        padding-top: 20px;
         border-bottom: none;
       }
       .nav-mobile-foot .nav-call {
@@ -436,6 +454,19 @@
 
       .nav-toggle { display: block; }
       .nav-badge { display: none; }
+
+      /* Scroll lock: overflow:hidden alone is ignored by iOS Safari. JS stores scrollY in body.style.top. */
+      body.menu-open {
+        position: fixed;
+        left: 0;
+        right: 0;
+        width: 100%;
+        overflow: hidden;
+      }
+      body.menu-open .whatsapp-float,
+      body.menu-open .request-float,
+      body.menu-open .chat-launch,
+      body.menu-open .chat-panel { visibility: hidden; }
     }
 
     /* ═══════════════════════
@@ -1832,7 +1863,7 @@
           <small>24 saat açık · Her gün · Mersin</small>
         </li>
       </ul>
-      <button class="nav-toggle" id="navToggle" onclick="toggleMenu()" aria-label="Menu">
+      <button type="button" class="nav-toggle" id="navToggle" onclick="toggleMenu()" aria-label="Menüyü aç" aria-expanded="false" aria-controls="navLinks">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -2829,8 +2860,9 @@
   <script>
     // ── Navigation scroll ──
     const nav = document.getElementById('nav');
-    let lastScroll = 0;
+    let menuOpen = false;
     window.addEventListener('scroll', () => {
+      if (menuOpen) return; // body is position:fixed while the menu is open; scrollY is meaningless
       nav.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
 
@@ -2844,27 +2876,39 @@
     }
 
     // ── Mobile menu ──
-    function toggleMenu() {
-      document.getElementById('navLinks').classList.toggle('open');
-      document.getElementById('navToggle').classList.toggle('active');
-      document.body.style.overflow = document.getElementById('navLinks').classList.contains('open') ? 'hidden' : '';
+    let menuScrollY = 0;
+    function setMenu(open) {
+      if (open === menuOpen) return;
+      menuOpen = open;
+      const links = document.getElementById('navLinks');
+      const toggle = document.getElementById('navToggle');
+      links.classList.toggle('open', open);
+      toggle.classList.toggle('active', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Menüyü kapat' : 'Menüyü aç');
+      if (open) {
+        menuScrollY = window.scrollY;
+        document.body.style.top = -menuScrollY + 'px';
+        document.body.classList.add('menu-open');
+      } else {
+        document.body.classList.remove('menu-open');
+        document.body.style.top = '';
+        // Restore the exact position instantly; html has scroll-behavior:smooth, so bypass it.
+        const root = document.documentElement;
+        const prev = root.style.scrollBehavior;
+        root.style.scrollBehavior = 'auto';
+        window.scrollTo(0, menuScrollY);
+        root.style.scrollBehavior = prev;
+      }
     }
+    function toggleMenu() { setMenu(!menuOpen); }
+    function closeMenu() { setMenu(false); }
 
-    function closeMenu() {
-      document.getElementById('navLinks').classList.remove('open');
-      document.getElementById('navToggle').classList.remove('active');
-      document.body.style.overflow = '';
-    }
-
-    // Close mobile menu when clicking outside (on the overlay background)
+    // Close mobile menu when tapping the panel background or pressing Escape
     document.getElementById('navLinks').addEventListener('click', function(e) {
       if (e.target === this) closeMenu();
     });
-
-    // Close mobile menu on scroll
-    window.addEventListener('scroll', function() {
-      if (document.getElementById('navLinks').classList.contains('open')) closeMenu();
-    }, { passive: true });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menuOpen) closeMenu(); });
 
     // ── Menu filter with animation ──
     function filterMenu(category, btn) {
