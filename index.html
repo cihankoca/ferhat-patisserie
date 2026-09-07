@@ -482,8 +482,10 @@
        ═══════════════════════ */
     .hero {
       position: relative;
+      /* svh, not dvh: dvh follows Safari's collapsing address bar, so the hero (and its
+         object-fit:cover photo) re-scaled on every scroll start. svh is the small, stable viewport. */
       min-height: 100vh;
-      min-height: 100dvh;
+      min-height: 100svh;
       display: flex;
       align-items: flex-end;
       overflow: hidden;
